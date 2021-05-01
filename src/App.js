@@ -6,7 +6,7 @@ import WriteupPage from "./pages/WriteupPage";
 
 function App() {
     return (
-        <Router>
+        <Router basename={"/final-project-ohio-voters"}>
             <div className="App">
                 <nav>
                     <Link to="/">Home</Link>

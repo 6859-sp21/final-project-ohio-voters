@@ -5,7 +5,7 @@ import pandas as pd
 import json
 
 pd.set_option("display.max_rows", None, "display.max_columns", None)
-df = pd.read_csv('data/CincinnatiClean.csv',
+df = pd.read_csv('public/data/CincinnatiClean.csv',
                  dtype=str,
                  parse_dates=['REGISTRATION_DATE'],
                  infer_datetime_format=True,
@@ -17,5 +17,5 @@ print(df.shape)
 print(df.dtypes)
 print(df.head)
 
-with open('data/voters.json', 'w') as file:
+with open('public/data/voters.json', 'w') as file:
     json.dump(df.to_json, file)

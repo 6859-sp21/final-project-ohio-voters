@@ -58,3 +58,7 @@ nav {
     font-size: 20px;
     background-color: #f5f6f7;
 }
+
+.rsm-geography:focus {
+    outline: none
+}

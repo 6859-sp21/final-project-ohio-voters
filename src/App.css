@@ -62,3 +62,13 @@ nav {
 .rsm-geography:focus {
     outline: none
 }
+
+.rsm-geography:hover {
+    fill: #9f67fa;
+    cursor: pointer;
+}
+
+svg {
+    display: inline-block;
+    vertical-align: middle;
+}

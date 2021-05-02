@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {getCincinnatiCounties} from "../utils/data";
+import {getCincinnatiCounties, getCincinnatiZipCodes} from "../utils/data";
 import {ComposableMap, Geographies, Geography} from "react-simple-maps";
 import {geoEquirectangular} from "d3-geo";
 import ReactTooltip from "react-tooltip";
@@ -12,7 +12,7 @@ export default class CincinnatiCounties extends Component {
     }
 
     componentDidMount() {
-        getCincinnatiCounties().then(cincinnatiCounties => this.setState({
+        getCincinnatiZipCodes().then(cincinnatiCounties => this.setState({
             cincinnatiCounties,
             projection: geoEquirectangular().fitExtent([[200, 0], [600, 500]], cincinnatiCounties)
         }));
@@ -34,7 +34,7 @@ export default class CincinnatiCounties extends Component {
                                            geography={geography}
                                            fill="#aaa"
                                            stroke="black"
-                                           onMouseEnter={() => this.setState({tooltipContent: geography.properties.name})}
+                                           onMouseEnter={() => this.setState({tooltipContent: geography.properties['ZCTA5CE10']})}
                                            onMouseLeave={() => this.setState({tooltipContent: ""})}
                                 />
                             )}

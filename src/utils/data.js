@@ -9,6 +9,16 @@ const getCincinnatiCounties = async () => {
     }).then(response => response.json())
 }
 
+const getCincinnatiZipCodes = async () => {
+    return await fetch('data/cincinnati_zipcodes.geojson', {
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    }).then(response => response.json())
+}
+
 export {
-    getCincinnatiCounties
+    getCincinnatiCounties,
+    getCincinnatiZipCodes
 }

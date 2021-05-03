@@ -94,23 +94,22 @@ def voter_activity_score(series):
     
     pbar.update(1)
 
-    return pd.Series([score, generalScore, primaryScore, specialScore])
+    return pd.Series([series.name, score, generalScore, primaryScore, specialScore])
+
+print('sorting by zip code...')
+dfs = dict(tuple(df.groupby('RESIDENTIAL_ZIP')))
+total_records = df.shape[0]
 
 print('calculating voter scores...')
-pbar = tqdm(total=df.shape[0])
-scores = df.apply(voter_activity_score, axis=1)
+pbar = tqdm(total=total_records)
+for zipCode in dfs.keys():
+    # print(zipCode)
+    zipData = dfs[zipCode]
+    scores = zipData.apply(voter_activity_score, axis=1)
+    scores.columns = ['SOS_VOTERID', 'Score', 'General', 'Primary', 'Special']
+
+    with open('public/data/zipcode_voters/' + str(zipCode) + '.json', 'w') as file:
+        json.dump(json.loads(scores.to_json(orient='records')), file)
 pbar.close()
-scores.columns = ['Score', 'General', 'Primary', 'Special']
-
-print('Final Scores DF Shape:', scores.shape)
-# print(scores)
-# print(scores.columns)
-# print(list(zip(range(91), df.columns)))
-# print(df.dtypes)
-# print(df.head)
-print('starting json dump...')
-
-with open('public/data/voters.json', 'w') as file:
-    json.dump(json.loads(scores.to_json(orient='index')), file)
 
 print('complete.')

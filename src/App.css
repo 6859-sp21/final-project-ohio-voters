@@ -73,27 +73,43 @@ svg {
     vertical-align: middle;
 }
 
-tbody {
-    display: block;
-    max-height: 530px;
-    overflow: auto;
-    font-size: 14px;
-    text-transform: capitalize;
-}
+/*tbody {*/
+/*    display: block;*/
+/*    max-height: 500px;*/
+/*    overflow: auto;*/
+/*    font-size: 12px;*/
+/*    text-transform: capitalize;*/
+/*}*/
 
-thead, tbody tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-    border-bottom: solid 1px #888;
-}
+/*thead, tbody tr {*/
+/*    display: table;*/
+/*    width: 100%;*/
+/*    table-layout: fixed;*/
+/*    border-bottom: solid 1px #888;*/
+/*}*/
 
-thead {
-    width: calc(100% - 1em) /* scrollbar is average 1em/16px width, remove it from thead width */
-}
+/*thead {*/
+/*    width: calc(100% - 1em) !* scrollbar is average 1em/16px width, remove it from thead width *!*/
+/*}*/
+
+/*table {*/
+/*    width: 100%;*/
+/*    background-color: #f5f6f7;*/
+/*    border-radius: 4px;*/
+/*}*/
 
 table {
-    width: 100%;
+    display: block;
+    max-height: 500px;
+    max-width: 100%;
     background-color: #f5f6f7;
+    font-size: 12px;
     border-radius: 4px;
+    overflow: auto;
 }
+
+/*thead, tbody tr {*/
+/*    display: table;*/
+/*    table-layout: fixed;*/
+/*    border-bottom: solid 1px #888;*/
+/*}*/

@@ -11,6 +11,74 @@ export default function VoterDataTable(props) {
             {
                 Header: 'First name',
                 accessor: "FIRST_NAME"
+            },
+            {
+                Header: 'Voter ID',
+                accessor: "SOS_VOTERID"
+            },
+            {
+                Header: "County #",
+                accessor: "COUNTY_NUMBER"
+            },
+            {
+                Header: "DOB",
+                accessor: "DATE_OF_BIRTH"
+            },
+            {
+                Header: "Registration date",
+                accessor: "REGISTRATION_DATE"
+            },
+            {
+                Header: "Status",
+                accessor: "VOTER_STATUS"
+            },
+            {
+                Header: "Party",
+                accessor: "PARTY_AFFILIATION"
+            },
+            {
+                Header: "Address",
+                accessor: "RESIDENTIAL_ADDRESS1",
+            },
+            {
+                Header: "City",
+                accessor: "RESIDENTIAL_CITY"
+            },
+            {
+                Header: "Zipcode",
+                accessor: "RESIDENTIAL_ZIP"
+            },
+            {
+                Header: "Congressional district",
+                accessor: "CONGRESSIONAL_DISTRICT"
+            },
+            {
+                Header: "Precinct",
+                accessor: "PRECINCT_NAME"
+            },
+            {
+                Header: "State rep district",
+                accessor: "STATE_REPRESENTATIVE_DISTRICT"
+            },
+            {
+                Header: "State sen district",
+                accessor: "STATE_SENATE_DISTRICT"
+            },
+            {
+                Header: "Voting score",
+                accessor: "Score"
+            },
+            {
+                Header: "Gen elections",
+                accessor: "General"
+            },
+            {
+                Header: "Primaries",
+                accessor: "Primary"
+            },
+            {
+                Header: "Special elections",
+                accessor: "Special"
             }
         ],
         []

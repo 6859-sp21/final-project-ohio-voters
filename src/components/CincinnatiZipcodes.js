@@ -12,6 +12,7 @@ export default class CincinnatiZipcodes extends Component {
         tooltipContent: "",
         position: {zoom: 1, coordinates: [-84.28399485924794, 39.236390248105536]},
         clickedZipcode: null,
+        tableData: null
     }
 
     componentDidMount() {
@@ -24,8 +25,7 @@ export default class CincinnatiZipcodes extends Component {
     handleZipcodeClicked = zipcode => {
         if (zipcode !== this.state.clickedZipcode) {
             getZipcodeVoters(zipcode).then(voters => {
-                this.tableData = voters;
-                this.setState({clickedZipcode: zipcode})
+                this.setState({tableData: voters, clickedZipcode: zipcode})
             })
         }
     }
@@ -51,7 +51,7 @@ export default class CincinnatiZipcodes extends Component {
     render() {
         return (
             this.state.cincinnatiCounties ?
-                <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+                <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                     <div style={{width: "50%"}}>
                         <div>
                             <button onClick={this.zoomOut}>
@@ -95,11 +95,11 @@ export default class CincinnatiZipcodes extends Component {
                         <ReactTooltip>{this.state.tooltipContent}</ReactTooltip>
                     </div>
                     <div style={{
-                        width: "50%",
+                        width: "100%",
                         margin: "30px 10px 10px",
                     }}>
-                        {this.state.clickedZipcode &&
-                        <VoterDataTable data={this.tableData}/>
+                        {this.state.tableData &&
+                        <VoterDataTable data={this.state.tableData}/>
                         }
                     </div>
                 </div>

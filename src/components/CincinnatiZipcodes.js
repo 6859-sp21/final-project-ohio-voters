@@ -3,6 +3,7 @@ import {getCincinnatiZipCodes, getZipcodeVoters} from "../utils/data";
 import {ComposableMap, Geographies, Geography, ZoomableGroup} from "react-simple-maps";
 import {geoEquirectangular} from "d3-geo";
 import ReactTooltip from "react-tooltip";
+import {CSVLink, CSVDownload} from "react-csv";
 import VoterDataTable from "./VoterDataTable";
 
 export default class CincinnatiZipcodes extends Component {
@@ -99,7 +100,10 @@ export default class CincinnatiZipcodes extends Component {
                         margin: "30px 10px 10px",
                     }}>
                         {this.state.tableData &&
-                        <VoterDataTable data={this.state.tableData}/>
+                        <>
+                            <CSVLink data={this.state.tableData}>Download me</CSVLink>
+                            <VoterDataTable data={this.state.tableData}/>
+                        </>
                         }
                     </div>
                 </div>

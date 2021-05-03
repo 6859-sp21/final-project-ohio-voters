@@ -1,5 +1,3 @@
-import * as d3 from "d3";
-
 const getCincinnatiCounties = async () => {
     return await fetch('data/cincinnati_counties.json', {
         headers: {
@@ -18,7 +16,17 @@ const getCincinnatiZipCodes = async () => {
     }).then(response => response.json())
 }
 
+const getZipcodeVoters = async zipcode => {
+    return await fetch(`data/zipcode_jsons/${zipcode}.json`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    }).then(response => response.json())
+}
+
 export {
     getCincinnatiCounties,
-    getCincinnatiZipCodes
+    getCincinnatiZipCodes,
+    getZipcodeVoters,
 }

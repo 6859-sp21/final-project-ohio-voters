@@ -13,8 +13,7 @@ print('reading in data...')
 df = pd.read_csv('public/data/CincinnatiClean.csv',
                  parse_dates=['REGISTRATION_DATE'],
                  infer_datetime_format=True,
-                 index_col='SOS_VOTERID',
-                 nrows=10000)
+                 index_col='SOS_VOTERID')
 
 df = df.fillna('')
 df = df.astype('str')
@@ -38,7 +37,7 @@ specialList = pd.DataFrame([e for e in electionList[0] if 'SPECIAL' in e])
 
 # replace all blanks with zero, 'X' with 1 (only in election columns)
 # not differentiating for party affiliation for primary votes
-replacements = [{'': 0, 'X': 1, 'D': 1, 'R': 1, 'L': 1, 'G': 1, 'C': 1, 'S': 1} for _ in range(len(electionList))]
+replacements = [{'': 0, 'X': 1, 'D': 1, 'R': 1, 'L': 1, 'G': 1, 'C': 1, 'S': 1, 'N': 1} for _ in range(len(electionList))]
 # print(replacements)
 # print(electionList)
 toreplace = dict(zip(electionList[0], replacements))
@@ -101,7 +100,7 @@ print('calculating voter scores...')
 pbar = tqdm(total=df.shape[0])
 scores = df.apply(voter_activity_score, axis=1)
 pbar.close()
-scores.columns = ['Score', 'General Election Score', 'Primary Election Score', 'Special Election Score']
+scores.columns = ['Score', 'General', 'Primary', 'Special']
 
 print('Final Scores DF Shape:', scores.shape)
 # print(scores)
@@ -112,6 +111,6 @@ print('Final Scores DF Shape:', scores.shape)
 print('starting json dump...')
 
 with open('public/data/voters.json', 'w') as file:
-    json.dump(scores.to_json(orient='index'), file)
+    json.dump(json.loads(scores.to_json(orient='index')), file)
 
 print('complete.')

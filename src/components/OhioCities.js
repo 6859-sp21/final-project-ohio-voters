@@ -8,6 +8,7 @@ export default class OhioCities extends Component {
     state = {
         ohioCities: null,
         projection: null,
+        clickedCity: null,
         tooltipContent: ""
     }
 
@@ -16,6 +17,20 @@ export default class OhioCities extends Component {
             ohioCities,
             projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], ohioCities)
         }));
+    }
+
+    handleGeographyClicked = geography => {
+        if (geography.properties.NAME === this.state.clickedCity) {
+            this.setState({
+                projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], this.state.ohioCities),
+                clickedCity: null
+            })
+        } else {
+            this.setState({
+                projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], geography),
+                clickedCity: geography.properties.NAME
+            })
+        }
     }
 
     render() {
@@ -31,8 +46,9 @@ export default class OhioCities extends Component {
                         {({geographies}) => geographies.map(geography =>
                             <Geography key={geography.rsmKey}
                                        geography={geography}
-                                       fill="#aaa"
+                                       fill={geography.properties.NAME === this.state.clickedCity ? "#9f67fa80" : "#aaa"}
                                        stroke="black"
+                                       onClick={() => this.handleGeographyClicked(geography)}
                                        onMouseEnter={() => this.setState({
                                            tooltipContent: `<p>${geography.properties.NAME}</p>`,
                                        })}

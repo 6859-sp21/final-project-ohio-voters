@@ -8,6 +8,7 @@ export default class OhioHouseDistricts extends Component {
     state = {
         ohioHouseDistricts: null,
         projection: null,
+        clickedDistrict: null,
         tooltipContent: ""
     }
 
@@ -16,6 +17,20 @@ export default class OhioHouseDistricts extends Component {
             ohioHouseDistricts,
             projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], ohioHouseDistricts)
         }));
+    }
+
+    handleGeographyClicked = geography => {
+        if (geography.properties.DISTRICT === this.state.clickedDistrict) {
+            this.setState({
+                projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], this.state.ohioHouseDistricts),
+                clickedDistrict: null
+            })
+        } else {
+            this.setState({
+                projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], geography),
+                clickedDistrict: geography.properties.DISTRICT
+            })
+        }
     }
 
     render() {
@@ -31,8 +46,9 @@ export default class OhioHouseDistricts extends Component {
                         {({geographies}) => geographies.map(geography =>
                             <Geography key={geography.rsmKey}
                                        geography={geography}
-                                       fill="#aaa"
+                                       fill={geography.properties.DISTRICT === this.state.clickedDistrict ? "#9f67fa80" : "#aaa"}
                                        stroke="black"
+                                       onClick={() => this.handleGeographyClicked(geography)}
                                        onMouseEnter={() => this.setState({
                                            tooltipContent: `<p>District ${geography.properties.DISTRICT}</p><p>Incumbent: ${geography.properties.FIRSTNAME} ${geography.properties.LASTNAME} (${geography.properties.PARTY})</p>`,
                                        })}

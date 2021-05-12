@@ -1,21 +1,17 @@
 ### Use to create an engagement score for each voter based upon voting record ###
 
 import pandas as pd
-import datetime
 from dateutil.relativedelta import relativedelta
-import json
 from tqdm import tqdm
-
-EXPORT_AS = 'JSON' # either 'JSON' or 'CSV'
 
 pd.set_option("display.max_rows", None, "display.max_columns", None)
 
 ### FOR LOADING DATA AGAIN: ###
 print('reading in data...')
-df = pd.read_csv('public/data/CincinnatiClean.csv',
-                 parse_dates=['REGISTRATION_DATE'],
+df = pd.read_csv('public/data/aapiVotingRecords.csv',
+                 parse_dates=['DATE_OF_BIRTH'],
                  infer_datetime_format=True,
-                 index_col='SOS_VOTERID')
+                 index_col='sos_voterid')
 
 df = df.fillna('')
 df = df.astype('str')
@@ -98,24 +94,16 @@ def voter_activity_score(series):
 
     return pd.Series([series.name, score, generalScore, primaryScore, specialScore])
 
-print('sorting by zip code...')
-dfs = dict(tuple(df.groupby('RESIDENTIAL_ZIP')))
-total_records = df.shape[0]
-
 print('calculating voter scores...')
-pbar = tqdm(total=total_records)
-for zipCode in dfs.keys():
-    # print(zipCode)
-    zipData = dfs[zipCode]
-    scores = zipData.apply(voter_activity_score, axis=1)
-    scores.columns = ['SOS_VOTERID', 'Score', 'General', 'Primary', 'Special']
-
-    if EXPORT_AS == 'JSON':
-        with open('public/data/zipcode_voters/' + str(zipCode) + '.json', 'w') as file:
-            json.dump(json.loads(scores.to_json(orient='records')), file)
-    elif EXPORT_AS == 'CSV':
-        with open('public/data/zipcode_voters_csvs/' + str(zipCode) + '.csv', 'w') as file:
-        scores.to_csv(file)
+pbar = tqdm(total=df.shape[0])
+scores = df.apply(voter_activity_score, axis=1)
 pbar.close()
+
+scores.columns = ['SOS_VOTERID', 'Score', 'General', 'Primary', 'Special']
+
+print('exporting...')
+with open('public/data/aapiScores.csv', 'a+') as file:
+    scores.to_csv(file)
+
 
 print('complete.')

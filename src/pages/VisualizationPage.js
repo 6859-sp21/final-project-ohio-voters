@@ -12,7 +12,7 @@ export default class VisualizationPage extends Component {
     render() {
         return (
             <>
-                <div>
+                <div style={{padding: 20}}>
                     <button onClick={() => this.setState({selected: 0})}>
                         US House District
                     </button>
@@ -26,7 +26,6 @@ export default class VisualizationPage extends Component {
                         Cities
                     </button>
                 </div>
-                {/*<CincinnatiZipcodes/>*/}
                 <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                     <div style={{width: "50%"}}>
                         {this.state.selected === 0 && <USHouseDistricts/>}

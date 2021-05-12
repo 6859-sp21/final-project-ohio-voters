@@ -7,15 +7,6 @@ const getCincinnatiCounties = async () => {
     }).then(response => response.json())
 }
 
-const getCincinnatiZipCodes = async () => {
-    return await fetch('data/cincinnati_zipcodes.geojson', {
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
-    }).then(response => response.json())
-}
-
 const getOhioCities = async () => {
     return await fetch('data/ohio_cities.json', {
         headers: {
@@ -54,7 +45,6 @@ const getUSHouseDistricts = async () => {
 
 export {
     getCincinnatiCounties,
-    getCincinnatiZipCodes,
     getOhioCities,
     getOhioHouseDistricts,
     getOhioSenateDistricts,

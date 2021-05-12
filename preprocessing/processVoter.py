@@ -6,6 +6,8 @@ from dateutil.relativedelta import relativedelta
 import json
 from tqdm import tqdm
 
+EXPORT_AS = 'JSON' # either 'JSON' or 'CSV'
+
 pd.set_option("display.max_rows", None, "display.max_columns", None)
 
 ### FOR LOADING DATA AGAIN: ###
@@ -108,8 +110,12 @@ for zipCode in dfs.keys():
     scores = zipData.apply(voter_activity_score, axis=1)
     scores.columns = ['SOS_VOTERID', 'Score', 'General', 'Primary', 'Special']
 
-    with open('public/data/zipcode_voters/' + str(zipCode) + '.json', 'w') as file:
-        json.dump(json.loads(scores.to_json(orient='records')), file)
+    if EXPORT_AS == 'JSON':
+        with open('public/data/zipcode_voters/' + str(zipCode) + '.json', 'w') as file:
+            json.dump(json.loads(scores.to_json(orient='records')), file)
+    elif EXPORT_AS == 'CSV':
+        with open('public/data/zipcode_voters_csvs/' + str(zipCode) + '.csv', 'w') as file:
+        scores.to_csv(file)
 pbar.close()
 
 print('complete.')

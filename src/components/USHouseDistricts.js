@@ -4,7 +4,7 @@ import {ComposableMap, Geographies, Geography} from "react-simple-maps";
 import {geoEquirectangular} from "d3-geo";
 import ReactTooltip from "react-tooltip";
 import Loading from "./Loading";
-import {getLocalityColor} from "../utils/calculations";
+import {getLocalityColor, LocalityColorLegend} from "../utils/calculations";
 
 export default class USHouseDistricts extends Component {
     state = {
@@ -15,7 +15,8 @@ export default class USHouseDistricts extends Component {
         clickedDistrictGeography: null,
         clickedZipcode: null,
         tooltipContent: "",
-        loading: true
+        loading: true,
+        hoveringSkew: null
     }
 
     componentDidMount() {
@@ -34,9 +35,10 @@ export default class USHouseDistricts extends Component {
             this.setState({
                 usHouseDistricts,
                 ohioZipcodes,
-                projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], usHouseDistricts),
+                projection: geoEquirectangular().fitExtent([[20, 20], [480, 380]], usHouseDistricts),
                 loading: false
             })
+            this.props.setLoadingStatData(false)
         })
     }
 
@@ -50,7 +52,7 @@ export default class USHouseDistricts extends Component {
 
     zoomToOhio = () => {
         this.setState({
-            projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], this.state.usHouseDistricts),
+            projection: geoEquirectangular().fitExtent([[20, 20], [480, 380]], this.state.usHouseDistricts),
             clickedDistrict: null,
             clickedDistrictGeography: null
         })
@@ -59,12 +61,13 @@ export default class USHouseDistricts extends Component {
 
     zoomToDistrict = (geography) => {
         this.setState({loading: true})
+        this.props.setLoadingStatData(true)
         firebaseDatabase.ref(`summaryStats/congressionalDistricts/${geography.properties.DISTRICT}`)
             .once('value')
             .then(snapshot => snapshot.val())
             .then(data => {
                 this.setState({
-                    projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], geography),
+                    projection: geoEquirectangular().fitExtent([[20, 20], [480, 380]], geography),
                     clickedDistrict: geography.properties.DISTRICT,
                     clickedDistrictGeography: geography,
                     clickedZipcode: null,
@@ -76,6 +79,7 @@ export default class USHouseDistricts extends Component {
 
     handleZipcodeClicked = geography => {
         this.setState({loading: true})
+        this.props.setLoadingStatData(true)
         if (geography.properties.ZCTA5CE10 !== this.state.clickedZipcode) {
             firebaseDatabase.ref(`summaryStats/zipcodes/${geography.properties.ZCTA5CE10}`)
                 .once('value')
@@ -87,7 +91,7 @@ export default class USHouseDistricts extends Component {
                     }, "zipcode")
                     this.setState({
                         clickedZipcode: geography.properties.ZCTA5CE10,
-                        projection: geography && geoEquirectangular().fitExtent([[20, 20], [480, 480]], geography),
+                        projection: geography && geoEquirectangular().fitExtent([[20, 20], [480, 380]], geography),
                         loading: false
                     })
                 })
@@ -106,7 +110,7 @@ export default class USHouseDistricts extends Component {
                 <ComposableMap projection={this.state.projection}
                                data-tip={this.state.tooltipContent}
                                width={500}
-                               height={500}
+                               height={400}
                                style={{margin: 10}}>
                     {this.state.clickedDistrict &&
                     <Geographies geography={this.state.ohioZipcodes}>
@@ -120,9 +124,11 @@ export default class USHouseDistricts extends Component {
                                        onClick={() => this.handleZipcodeClicked(geography)}
                                        onMouseEnter={() => this.setState({
                                            tooltipContent: `<p>Zipcode ${geography.properties.ZCTA5CE10}</p>`,
+                                           hoveringSkew: this.state[geography.properties.ZCTA5CE10]
                                        })}
                                        onMouseLeave={() => this.setState({
-                                           tooltipContent: ""
+                                           tooltipContent: "",
+                                           hoveringSkew: null
                                        })}
                             />
                         )}
@@ -142,14 +148,17 @@ export default class USHouseDistricts extends Component {
                                        onClick={() => this.handleGeographyClicked(geography)}
                                        onMouseEnter={() => this.setState({
                                            tooltipContent: `<p>District ${geography.properties.DISTRICT}</p><p>Incumbent: ${geography.properties.FIRSTNAME} ${geography.properties.LASTNAME} (${geography.properties.PARTY})</p>`,
+                                           hoveringSkew: this.state[geography.properties.DISTRICT]
                                        })}
                                        onMouseLeave={() => this.setState({
-                                           tooltipContent: ""
+                                           tooltipContent: "",
+                                           hoveringSkew: null
                                        })}
                             />
                         )}
                     </Geographies>
                 </ComposableMap>
+                <LocalityColorLegend position={this.state.hoveringSkew}/>
                 {this.state.clickedDistrict && !this.state.clickedZipcode &&
                 <button onClick={this.zoomToOhio}>
                     Back to Ohio

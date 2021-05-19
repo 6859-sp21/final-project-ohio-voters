@@ -4,7 +4,7 @@ import {ComposableMap, Geographies, Geography} from "react-simple-maps";
 import {geoEquirectangular} from "d3-geo";
 import ReactTooltip from "react-tooltip";
 import Loading from "./Loading";
-import {getLocalityColor} from "../utils/calculations";
+import {getLocalityColor, LocalityColorLegend} from "../utils/calculations";
 
 export default class OhioCities extends Component {
     state = {
@@ -16,7 +16,8 @@ export default class OhioCities extends Component {
         clickedCityGeography: null,
         clickedZipcode: null,
         tooltipContent: "",
-        loading: true
+        loading: true,
+        hoveringSkew: null
     }
 
     componentDidMount() {
@@ -36,9 +37,10 @@ export default class OhioCities extends Component {
                 ohioCities,
                 ohioOutline,
                 ohioZipcodes,
-                projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], ohioOutline),
+                projection: geoEquirectangular().fitExtent([[20, 20], [480, 380]], ohioOutline),
                 loading: false
             })
+            this.props.setLoadingStatData(false)
         })
     }
 
@@ -52,7 +54,7 @@ export default class OhioCities extends Component {
 
     zoomToOhio = () => {
         this.setState({
-            projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], this.state.ohioOutline),
+            projection: geoEquirectangular().fitExtent([[20, 20], [480, 380]], this.state.ohioOutline),
             clickedCity: null,
             clickedCityGeography: null
         })
@@ -61,12 +63,13 @@ export default class OhioCities extends Component {
 
     zoomToCity = geography => {
         this.setState({loading: true})
+        this.props.setLoadingStatData(true)
         firebaseDatabase.ref(`summaryStats/cities/${geography.properties.NAME.toLocaleUpperCase()}`)
             .once('value')
             .then(snapshot => snapshot.val())
             .then(data => {
                 this.setState({
-                    projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], geography),
+                    projection: geoEquirectangular().fitExtent([[20, 20], [480, 380]], geography),
                     clickedCity: geography.properties.NAME,
                     clickedCityGeography: geography,
                     clickedZipcode: null,
@@ -78,6 +81,7 @@ export default class OhioCities extends Component {
 
     handleZipcodeClicked = geography => {
         this.setState({loading: true})
+        this.props.setLoadingStatData(true)
         if (geography.properties.ZCTA5CE10 !== this.state.clickedZipcode) {
             firebaseDatabase.ref(`summaryStats/zipcodes/${geography.properties.ZCTA5CE10}`)
                 .once('value')
@@ -89,7 +93,7 @@ export default class OhioCities extends Component {
                     }, "zipcode")
                     this.setState({
                         clickedZipcode: geography.properties.ZCTA5CE10,
-                        projection: geography && geoEquirectangular().fitExtent([[20, 20], [480, 480]], geography),
+                        projection: geography && geoEquirectangular().fitExtent([[20, 20], [480, 380]], geography),
                         loading: false
                     })
                 })
@@ -108,7 +112,7 @@ export default class OhioCities extends Component {
                 <ComposableMap projection={this.state.projection}
                                data-tip={this.state.tooltipContent}
                                width={500}
-                               height={500}
+                               height={400}
                                style={{margin: 10}}>
                     <Geographies geography={this.state.ohioOutline}>
                         {({geographies}) => geographies.map(geography =>
@@ -131,9 +135,11 @@ export default class OhioCities extends Component {
                                        onClick={() => this.handleZipcodeClicked(geography)}
                                        onMouseEnter={() => this.setState({
                                            tooltipContent: `<p>Zipcode ${geography.properties.ZCTA5CE10}</p>`,
+                                           hoveringSkew: this.state[geography.properties.ZCTA5CE10]
                                        })}
                                        onMouseLeave={() => this.setState({
-                                           tooltipContent: ""
+                                           tooltipContent: "",
+                                           hoveringSkew: null
                                        })}
                             />
                         )}
@@ -154,14 +160,17 @@ export default class OhioCities extends Component {
                                        onClick={() => this.handleGeographyClicked(geography)}
                                        onMouseEnter={() => this.setState({
                                            tooltipContent: `<p>${geography.properties.NAME}</p>`,
+                                           hoveringSkew: this.state[geography.properties.NAME.toLocaleUpperCase()]
                                        })}
                                        onMouseLeave={() => this.setState({
-                                           tooltipContent: ""
+                                           tooltipContent: "",
+                                           hoveringSkew: null
                                        })}
                             />
                         )}
                     </Geographies>
                 </ComposableMap>
+                <LocalityColorLegend position={this.state.hoveringSkew}/>
                 {this.state.clickedCity && !this.state.clickedZipcode &&
                 <button onClick={this.zoomToOhio}>
                     Back to Ohio

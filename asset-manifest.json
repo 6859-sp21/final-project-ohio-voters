@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/final-project-ohio-voters/static/css/main.9ff3f375.chunk.css",
-    "main.js": "/final-project-ohio-voters/static/js/main.d706e0ab.chunk.js",
-    "main.js.map": "/final-project-ohio-voters/static/js/main.d706e0ab.chunk.js.map",
+    "main.js": "/final-project-ohio-voters/static/js/main.8c1ec9de.chunk.js",
+    "main.js.map": "/final-project-ohio-voters/static/js/main.8c1ec9de.chunk.js.map",
     "runtime-main.js": "/final-project-ohio-voters/static/js/runtime-main.560835a0.js",
     "runtime-main.js.map": "/final-project-ohio-voters/static/js/runtime-main.560835a0.js.map",
     "static/css/2.fe708519.chunk.css": "/final-project-ohio-voters/static/css/2.fe708519.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.fe708519.chunk.css",
     "static/js/2.b6586a54.chunk.js",
     "static/css/main.9ff3f375.chunk.css",
-    "static/js/main.d706e0ab.chunk.js"
+    "static/js/main.8c1ec9de.chunk.js"
   ]
 }

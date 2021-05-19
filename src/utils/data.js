@@ -68,6 +68,15 @@ const getUSHouseDistricts = async () => {
     }).then(response => response.json())
 }
 
+const getOhioZipcodes = async () => {
+    return await fetch('data/ohio_zip_codes.json', {
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    }).then(response => response.json())
+}
+
 const getBipartisanStats = (stats, type) => {
     const majority = {"dem":[], "rep": []}
     if (stats.constructor === Object && stats !== null) {
@@ -179,6 +188,7 @@ export {
     getOhioOutline,
     getOhioHouseDistricts,
     getOhioSenateDistricts,
+    getOhioZipcodes,
     getUSHouseDistricts,
     getBipartisanStats,
     getBipartisanEngagement,

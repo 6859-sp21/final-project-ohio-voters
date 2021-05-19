@@ -4,6 +4,7 @@ import {ComposableMap, Geographies, Geography} from "react-simple-maps";
 import {geoEquirectangular} from "d3-geo";
 import ReactTooltip from "react-tooltip";
 import Loading from "./Loading";
+import {getLocalityColor} from "../utils/calculations";
 
 export default class OhioCities extends Component {
     state = {
@@ -20,7 +21,17 @@ export default class OhioCities extends Component {
 
     componentDidMount() {
         const promises = [getOhioCities(), getOhioOutline(), getOhioZipcodes()];
-        Promise.all(promises).then(([ohioCities, ohioOutline, ohioZipcodes]) => {
+        Promise.all(promises).then(async([ohioCities, ohioOutline, ohioZipcodes]) => {
+            await firebaseDatabase.ref('summaryStats/cities').get().then(snapshot => {
+                snapshot.forEach(citySnapshot => {
+                    this.setState({[citySnapshot.key]: citySnapshot.val().CODED_PARTY_AFFILIATION})
+                })
+            })
+            await firebaseDatabase.ref('summaryStats/zipcodes').get().then(snapshot => {
+                snapshot.forEach(zipcodeSnapshot => {
+                    this.setState({[zipcodeSnapshot.key]: zipcodeSnapshot.val().CODED_PARTY_AFFILIATION})
+                })
+            })
             this.setState({
                 ohioCities,
                 ohioOutline,
@@ -108,23 +119,6 @@ export default class OhioCities extends Component {
                             />
                         )}
                     </Geographies>
-                    <Geographies geography={this.state.ohioCities}>
-                        {({geographies}) => geographies.map(geography =>
-                            <Geography key={geography.rsmKey}
-                                       geography={geography}
-                                       className="hover-geography"
-                                       fill={geography.properties.NAME === this.state.clickedCity ? "#9f67fa80" : "#aaa"}
-                                       stroke="black"
-                                       onClick={() => this.handleGeographyClicked(geography)}
-                                       onMouseEnter={() => this.setState({
-                                           tooltipContent: `<p>${geography.properties.NAME}</p>`,
-                                       })}
-                                       onMouseLeave={() => this.setState({
-                                           tooltipContent: ""
-                                       })}
-                            />
-                        )}
-                    </Geographies>
                     {this.state.clickedCity &&
                     <Geographies geography={this.state.ohioZipcodes}>
                         {({geographies}) => geographies.map(geography =>
@@ -133,8 +127,7 @@ export default class OhioCities extends Component {
                                        className="hover-geography"
                                        stroke="black"
                                        strokeWidth={this.state.clickedZipcode === geography.properties.ZCTA5CE10 ? 2 : 1}
-                                       fill="transparent"
-                                       fillOpacity={0.6}
+                                       fill={getLocalityColor(this.state[geography.properties.ZCTA5CE10])}
                                        onClick={() => this.handleZipcodeClicked(geography)}
                                        onMouseEnter={() => this.setState({
                                            tooltipContent: `<p>Zipcode ${geography.properties.ZCTA5CE10}</p>`,
@@ -146,6 +139,28 @@ export default class OhioCities extends Component {
                         )}
                     </Geographies>
                     }
+                    <Geographies geography={this.state.ohioCities}>
+                        {({geographies}) => geographies.map(geography =>
+                            <Geography key={geography.rsmKey}
+                                       geography={geography}
+                                       className="hover-geography"
+                                       fill={this.state.clickedCity ?
+                                           "none"
+                                           :
+                                           getLocalityColor(this.state[geography.properties.NAME.toLocaleUpperCase()])
+                                       }
+                                       stroke="black"
+                                       strokeWidth={geography.properties.NAME === this.state.clickedCity ? 2 : 1}
+                                       onClick={() => this.handleGeographyClicked(geography)}
+                                       onMouseEnter={() => this.setState({
+                                           tooltipContent: `<p>${geography.properties.NAME}</p>`,
+                                       })}
+                                       onMouseLeave={() => this.setState({
+                                           tooltipContent: ""
+                                       })}
+                            />
+                        )}
+                    </Geographies>
                 </ComposableMap>
                 {this.state.clickedCity && !this.state.clickedZipcode &&
                 <button onClick={this.zoomToOhio}>

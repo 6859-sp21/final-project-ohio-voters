@@ -85,7 +85,7 @@ button.selected {
 }
 
 .hover-geography:hover {
-    fill: #9f67fa;
+    stroke-width: 2;
     cursor: pointer;
 }
 

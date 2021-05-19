@@ -4,6 +4,7 @@ import {ComposableMap, Geographies, Geography} from "react-simple-maps";
 import {geoEquirectangular} from "d3-geo";
 import ReactTooltip from "react-tooltip";
 import Loading from "./Loading";
+import {getLocalityColor} from "../utils/calculations";
 
 export default class OhioSenateDistricts extends Component {
     state = {
@@ -19,7 +20,17 @@ export default class OhioSenateDistricts extends Component {
 
     componentDidMount() {
         const promises = [getOhioSenateDistricts(), getOhioZipcodes()];
-        Promise.all(promises).then(([ohioSenateDistricts, ohioZipcodes]) => {
+        Promise.all(promises).then(async ([ohioSenateDistricts, ohioZipcodes]) => {
+            await firebaseDatabase.ref('summaryStats/stateSenateDistricts').get().then(snapshot => {
+                snapshot.forEach(districtSnapshot => {
+                    this.setState({[districtSnapshot.key]: districtSnapshot.val().CODED_PARTY_AFFILIATION})
+                })
+            })
+            await firebaseDatabase.ref('summaryStats/zipcodes').get().then(snapshot => {
+                snapshot.forEach(zipcodeSnapshot => {
+                    this.setState({[zipcodeSnapshot.key]: zipcodeSnapshot.val().CODED_PARTY_AFFILIATION})
+                })
+            })
             this.setState({
                 ohioSenateDistricts,
                 ohioZipcodes,
@@ -97,23 +108,6 @@ export default class OhioSenateDistricts extends Component {
                                width={500}
                                height={500}
                                style={{margin: 10}}>
-                    <Geographies geography={this.state.ohioSenateDistricts}>
-                        {({geographies}) => geographies.map(geography =>
-                            <Geography key={geography.rsmKey}
-                                       geography={geography}
-                                       className="hover-geography"
-                                       fill={geography.properties.DISTRICT === this.state.clickedDistrict ? "#9f67fa80" : "#aaa"}
-                                       stroke="black"
-                                       onClick={() => this.handleGeographyClicked(geography)}
-                                       onMouseEnter={() => this.setState({
-                                           tooltipContent: `<p>District ${geography.properties.DISTRICT}</p><p>Incumbent: ${geography.properties.FIRSTNAME} ${geography.properties.LASTNAME} (${geography.properties.PARTY})</p>`,
-                                       })}
-                                       onMouseLeave={() => this.setState({
-                                           tooltipContent: ""
-                                       })}
-                            />
-                        )}
-                    </Geographies>
                     {this.state.clickedDistrict &&
                     <Geographies geography={this.state.ohioZipcodes}>
                         {({geographies}) => geographies.map(geography =>
@@ -122,8 +116,7 @@ export default class OhioSenateDistricts extends Component {
                                        className="hover-geography"
                                        stroke="black"
                                        strokeWidth={this.state.clickedZipcode === geography.properties.ZCTA5CE10 ? 2 : 1}
-                                       fill="transparent"
-                                       fillOpacity={0.6}
+                                       fill={getLocalityColor(this.state[geography.properties.ZCTA5CE10])}
                                        onClick={() => this.handleZipcodeClicked(geography)}
                                        onMouseEnter={() => this.setState({
                                            tooltipContent: `<p>Zipcode ${geography.properties.ZCTA5CE10}</p>`,
@@ -135,6 +128,28 @@ export default class OhioSenateDistricts extends Component {
                         )}
                     </Geographies>
                     }
+                    <Geographies geography={this.state.ohioSenateDistricts}>
+                        {({geographies}) => geographies.map(geography =>
+                            <Geography key={geography.rsmKey}
+                                       geography={geography}
+                                       className="hover-geography"
+                                       fill={this.state.clickedDistrict ?
+                                           "none"
+                                           :
+                                           getLocalityColor(this.state[geography.properties.DISTRICT])
+                                       }
+                                       stroke="black"
+                                       strokeWidth={geography.properties.DISTRICT === this.state.clickedDistrict ? 2 : 1}
+                                       onClick={() => this.handleGeographyClicked(geography)}
+                                       onMouseEnter={() => this.setState({
+                                           tooltipContent: `<p>District ${geography.properties.DISTRICT}</p><p>Incumbent: ${geography.properties.FIRSTNAME} ${geography.properties.LASTNAME} (${geography.properties.PARTY})</p>`,
+                                       })}
+                                       onMouseLeave={() => this.setState({
+                                           tooltipContent: ""
+                                       })}
+                            />
+                        )}
+                    </Geographies>
                 </ComposableMap>
                 {this.state.clickedDistrict && !this.state.clickedZipcode &&
                 <button onClick={this.zoomToOhio}>

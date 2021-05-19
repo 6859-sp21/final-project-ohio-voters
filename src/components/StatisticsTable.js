@@ -35,7 +35,7 @@ export default class StatisticsTable extends Component {
             }
         } else {
             return {
-                Age: `${this.props.statData.avg_age.toFixed(2)} ± ${this.props.statData.age_stddev.toFixed(2)}`,
+                Age: `${this.props.statData.avg_age.toFixed(2)} ± ${(this.props.statData.age_stddev || 0).toFixed(2)}`,
                 "Party Skew": this.props.statData.CODED_PARTY_AFFILIATION.toFixed(5),
                 "# Registered Voters": this.props.statData["Number of Rows (Aggregated)"],
                 "Overall AVES": this.props.statData.Score.toFixed(3),

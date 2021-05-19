@@ -6,6 +6,7 @@ import { ResponsiveCirclePacking } from '@nivo/circle-packing';
 import * as d3 from "d3";
 import {firebaseDatabase} from '../utils/data';
 import BipartisanBubble from "../components/BipartisanBubble"
+import BipartisanEngagement from "../components/BipartisanEngagement"
 
 import "../App.css";
 import { callbackify } from "util";
@@ -37,7 +38,11 @@ export default class Visualization extends Component {
 
     render() {
       return (
-        <BipartisanBubble />
+        <>
+          {this.props.vizId === 0 && <BipartisanBubble />}
+          {this.props.vizId === 1 && <BipartisanEngagement />}
+          <div></div>
+        </>
       )
     }
 

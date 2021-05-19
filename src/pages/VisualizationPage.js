@@ -24,16 +24,20 @@ export default class VisualizationPage extends Component {
         return (
             <>
                 <div style={{padding: 20}}>
-                    <button onClick={() => this.toggleSelectedTab(0)}>
+                    <button className={this.state.selectedTab === 0 && "selected"}
+                            onClick={() => this.toggleSelectedTab(0)}>
                         US House District
                     </button>
-                    <button onClick={() => this.toggleSelectedTab(1)}>
+                    <button className={this.state.selectedTab === 1 && "selected"}
+                            onClick={() => this.toggleSelectedTab(1)}>
                         Ohio Senate District
                     </button>
-                    <button onClick={() => this.toggleSelectedTab(2)}>
+                    <button className={this.state.selectedTab === 2 && "selected"}
+                            onClick={() => this.toggleSelectedTab(2)}>
                         Ohio House District
                     </button>
-                    <button onClick={() => this.toggleSelectedTab(3)}>
+                    <button className={this.state.selectedTab === 3 && "selected"}
+                            onClick={() => this.toggleSelectedTab(3)}>
                         Cities
                     </button>
                 </div>

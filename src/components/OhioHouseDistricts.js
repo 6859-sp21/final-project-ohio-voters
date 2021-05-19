@@ -45,7 +45,6 @@ export default class OhioHouseDistricts extends Component {
     }
 
     handleZipcodeClicked = geography => {
-        console.log(geography)
         if (geography.properties.ZCTA5CE10 !== this.state.clickedZipcode) {
             firebaseDatabase.ref(`summaryStats/zipcodes/${geography.properties.ZCTA5CE10}`)
                 .once('value')
@@ -90,14 +89,14 @@ export default class OhioHouseDistricts extends Component {
                                        stroke="black"
                                        strokeWidth={this.state.clickedZipcode === geography.properties.ZCTA5CE10 ? 2 : 1}
                                        fill="transparent"
-                                       fillOpacity={0.5}
+                                       fillOpacity={0.6}
                                        onClick={() => this.handleZipcodeClicked(geography)}
-                                       // onMouseEnter={() => this.setState({
-                                       //     tooltipContent: `<p>District ${geography.properties.DISTRICT}</p><p>Incumbent: ${geography.properties.FIRSTNAME} ${geography.properties.LASTNAME} (${geography.properties.PARTY})</p>`,
-                                       // })}
-                                       // onMouseLeave={() => this.setState({
-                                       //     tooltipContent: ""
-                                       // })}
+                                       onMouseEnter={() => this.setState({
+                                           tooltipContent: `<p>Zipcode ${geography.properties.ZCTA5CE10}</p>`,
+                                       })}
+                                       onMouseLeave={() => this.setState({
+                                           tooltipContent: ""
+                                       })}
                             />
                         )}
                     </Geographies>

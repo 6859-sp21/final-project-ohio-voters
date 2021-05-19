@@ -68,6 +68,58 @@ const getUSHouseDistricts = async () => {
     }).then(response => response.json())
 }
 
+const getBipartisanStats = (stats, type) => {
+    const majority = {"dem":[], "rep": []}
+    if (stats.constructor === Object && stats !== null) {
+      stats = Object.keys(stats).map(function(key) {
+        return stats[key];
+      });;
+    }
+    for (const value of stats) {
+        if (value === undefined) {
+          continue;
+        }
+        var district;
+
+        if ("STATE_REPRESENTATIVE_DISTRICT" in value) {
+          district = value["STATE_REPRESENTATIVE_DISTRICT"];
+        } else if ("CITY" in value) {
+          district = value["CITY"];
+        } else if ("CONGRESSIONAL_DISTRICT" in value) {
+          district = value["CONGRESSIONAL_DISTRICT"];
+        } else {
+          district = value["STATE_SENATE_DISTRICT"];
+        }
+
+        var proportion = value["CODED_PARTY_AFFILIATION"] * value["Number of Rows (Aggregated)"];
+        if (proportion >= 0) {
+            const skew = Math.abs(value["CODED_PARTY_AFFILIATION"].toFixed(3)) + " skew towards Dem";
+            majority.dem.push({value: Math.round(proportion), _id: district, color: "rgba(78, 165, 253, 0.6)", type: type, skew: skew, population: value["Number of Rows (Aggregated)"]});
+        } else {
+            const skew = Math.abs(value["CODED_PARTY_AFFILIATION"].toFixed(3)) + " skew towards Rep";
+            majority.rep.push({value: Math.round(Math.abs(proportion)), _id: district, color: "rgba(253, 78, 78, 0.6)", type:type, skew: skew, population: value["Number of Rows (Aggregated)"]});
+        }
+    }
+
+    const majority_grouped = {_id : "Party Affiliation", color: 'rgba(78, 165, 253, 0)', children: [
+        {
+            _id : (type !== "City") ? "Democratic Leaning " + type.slice(0,-2) + "s" : "Democratic Leaning Cities",
+            // color: "hsl(217, 70%, 50%)",
+            color: 'rgba(78, 165, 253, 0.36)',
+
+            children: majority.dem,
+        },
+        {
+            _id: (type !== "City") ? "Republican Leaning " + type.slice(0,-2) + "s" : "Republican Leaning Cities",
+            // color: "hsl(338, 70%, 50%)",
+            color: 'rgba(253, 78, 78, 0.36)',
+            children: majority.rep,
+        },
+    ]}
+    return majority_grouped;
+}
+
+
 export {
     getCincinnatiCounties,
     getOhioCities,
@@ -75,4 +127,5 @@ export {
     getOhioHouseDistricts,
     getOhioSenateDistricts,
     getUSHouseDistricts,
+    getBipartisanStats,
 }

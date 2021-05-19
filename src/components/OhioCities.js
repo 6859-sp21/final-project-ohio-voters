@@ -11,6 +11,7 @@ export default class OhioCities extends Component {
         ohioZipcodes: null,
         projection: null,
         clickedCity: null,
+        clickedCityGeography: null,
         clickedZipcode: null,
         tooltipContent: ""
     }
@@ -22,30 +23,41 @@ export default class OhioCities extends Component {
                 ohioCities,
                 ohioOutline,
                 ohioZipcodes,
-                projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], ohioCities)
+                projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], ohioOutline)
             })
         })
     }
 
     handleGeographyClicked = geography => {
         if (geography.properties.NAME === this.state.clickedCity) {
-            this.setState({
-                projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], this.state.ohioCities),
-                clickedCity: null
-            })
-            this.props.setStatData(null, null)
+            this.zoomToOhio()
         } else {
-            firebaseDatabase.ref(`summaryStats/cities/${geography.properties.NAME.toLocaleUpperCase()}`)
-                .once('value')
-                .then(snapshot => snapshot.val())
-                .then(data => {
-                    this.setState({
-                        projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], geography),
-                        clickedCity: geography.properties.NAME
-                    })
-                    this.props.setStatData(data, 'cities')
-                })
+            this.zoomToCity(geography)
         }
+    }
+
+    zoomToOhio = () => {
+        this.setState({
+            projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], this.state.ohioOutline),
+            clickedCity: null,
+            clickedCityGeography: null
+        })
+        this.props.setStatData(null, null)
+    }
+
+    zoomToCity = geography => {
+        firebaseDatabase.ref(`summaryStats/cities/${geography.properties.NAME.toLocaleUpperCase()}`)
+            .once('value')
+            .then(snapshot => snapshot.val())
+            .then(data => {
+                this.setState({
+                    projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], geography),
+                    clickedCity: geography.properties.NAME,
+                    clickedCityGeography: geography,
+                    clickedZipcode: null
+                })
+                this.props.setStatData(data, 'cities')
+            })
     }
 
     handleZipcodeClicked = geography => {
@@ -57,7 +69,10 @@ export default class OhioCities extends Component {
                     RESIDENTIAL_ZIP: geography.properties.ZCTA5CE10,
                     noData: true
                 }, "zipcode"))
-            this.setState({clickedZipcode: geography.properties.ZCTA5CE10})
+            this.setState({
+                clickedZipcode: geography.properties.ZCTA5CE10,
+                projection: geography && geoEquirectangular().fitExtent([[20, 20], [480, 480]], geography)
+            })
         }
     }
 
@@ -118,6 +133,17 @@ export default class OhioCities extends Component {
                     </Geographies>
                     }
                 </ComposableMap>
+                {this.state.clickedCity && !this.state.clickedZipcode &&
+                <button onClick={this.zoomToOhio}>
+                    Back to Ohio
+                </button>
+                }
+                {this.state.clickedZipcode &&
+                <button
+                    onClick={() => this.zoomToCity(this.state.clickedCityGeography)}>
+                    Back to {this.state.clickedCity}
+                </button>
+                }
                 <ReactTooltip html={true}>{this.state.tooltipContent}</ReactTooltip>
             </>
         )

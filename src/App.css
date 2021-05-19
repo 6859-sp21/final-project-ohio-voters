@@ -63,7 +63,7 @@ nav {
     outline: none
 }
 
-.rsm-geography:hover {
+.hover-geography:hover {
     fill: #9f67fa;
     cursor: pointer;
 }

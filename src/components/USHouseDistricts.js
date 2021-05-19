@@ -51,6 +51,7 @@ export default class USHouseDistricts extends Component {
                         {({geographies}) => geographies.map(geography =>
                             <Geography key={geography.rsmKey}
                                        geography={geography}
+                                       className="hover-geography"
                                        fill={geography.properties.DISTRICT === this.state.clickedDistrict ? "#9f67fa80" : "#aaa"}
                                        stroke="black"
                                        onClick={() => this.handleGeographyClicked(geography)}

@@ -66,6 +66,7 @@ export default class OhioCities extends Component {
                         {({geographies}) => geographies.map(geography =>
                             <Geography key={geography.rsmKey}
                                        geography={geography}
+                                       className="hover-geography"
                                        fill={geography.properties.NAME === this.state.clickedCity ? "#9f67fa80" : "#aaa"}
                                        stroke="black"
                                        onClick={() => this.handleGeographyClicked(geography)}

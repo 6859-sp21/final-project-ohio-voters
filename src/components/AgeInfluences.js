@@ -27,7 +27,6 @@ export default class AgeInfluences extends Component {
         cityStats: null,
         selectedArea: null,
         selectedScore : null,
-
     }
 
     componentDidMount() {
@@ -76,7 +75,7 @@ export default class AgeInfluences extends Component {
       return (
         <>
           <div
-              style={{width:'55%', paddingRight:'5%', paddingBottom:"75px", paddingLeft:"5%", height: "calc(42.5vh - 150px)", position:"absolute", right:"0", top:"75"}}
+              style={{width:'55%', paddingRight:'5%', paddingBottom:"75px", paddingLeft:"5%", height: "calc(43vh - 150px)", position:"fixed", right:"0", top:"75"}}
           >
 
           {this.state.selectedArea && this.state.selectedScore && <ResponsiveBar

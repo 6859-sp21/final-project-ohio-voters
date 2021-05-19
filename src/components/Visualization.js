@@ -38,6 +38,7 @@ const useWindowDimensions = () => {
 export default class Visualization extends Component {
 
     render() {
+      console.log(this.props.vizId)
       return (
         <>
           {this.props.vizId === 0 && <BipartisanBubble />}

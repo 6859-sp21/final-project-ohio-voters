@@ -1,5 +1,5 @@
 *CincinnatiClean.csv
-/data/zipcode_jsons/
+public/data/zipcode_jsons/*
 *tempData.pkl
 voters_full.json
 

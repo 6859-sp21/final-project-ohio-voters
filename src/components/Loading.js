@@ -12,7 +12,8 @@ export default class Loading extends Component {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                color: "#555"
+                color: "#bbb",
+                fontSize: 20
             }}>
                 <p>
                     <FontAwesomeIcon icon={faSpinner} pulse/> Loading...

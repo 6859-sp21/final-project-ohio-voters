@@ -48,7 +48,7 @@ export default class StatisticsTable extends Component {
 
     render() {
         return (
-            <div style={{width: "30%", border: "1px solid black", borderRadius: 4}}>
+            <div style={{width: "30%", border: "1px solid white", borderRadius: 4}}>
                 <h3>
                     {this.getHeader()}
                 </h3>

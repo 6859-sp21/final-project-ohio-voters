@@ -1,7 +1,8 @@
 .App {
     font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
     text-align: center;
-    background-color: #e2e4eb;
+    background-color: #111;
+    color: white;
     min-height: 100vh;
 }
 
@@ -47,7 +48,7 @@ a {
 
 a:hover {
     font-weight: 600;
-    color: #663783;
+    color: white;
 }
 
 nav {
@@ -56,22 +57,23 @@ nav {
     justify-content: space-around;
     padding: 24px 200px;
     font-size: 20px;
-    background-color: #f5f6f7;
+    background-color: #1f1f1f;
 }
 
 button {
     border: none;
     font-family: inherit;
-    background-color: #9f67fa88;
+    background-color: #9f67fa;
+    color: white;
     border-radius: 4px;
-    padding: 4px 8px;
+    padding: 8px 16px;
     margin: 4px;
     cursor: pointer;
     font-weight: 500;
 }
 
 button:hover {
-    background-color: #9f67fa;
+    background-color: #663783;
     color: white;
 }
 

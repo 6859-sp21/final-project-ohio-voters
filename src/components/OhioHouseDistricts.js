@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {firebaseDatabase, getOhioHouseDistricts} from "../utils/data";
+import {firebaseDatabase, getOhioHouseDistricts, getOhioZipcodes} from "../utils/data";
 import {ComposableMap, Geographies, Geography} from "react-simple-maps";
 import {geoEquirectangular} from "d3-geo";
 import ReactTooltip from "react-tooltip";
@@ -7,16 +7,22 @@ import ReactTooltip from "react-tooltip";
 export default class OhioHouseDistricts extends Component {
     state = {
         ohioHouseDistricts: null,
+        ohioZipcodes: null,
         projection: null,
         clickedDistrict: null,
+        clickedZipcode: null,
         tooltipContent: ""
     }
 
     componentDidMount() {
-        getOhioHouseDistricts().then(ohioHouseDistricts => this.setState({
-            ohioHouseDistricts,
-            projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], ohioHouseDistricts)
-        }));
+        const promises = [getOhioHouseDistricts(), getOhioZipcodes()];
+        Promise.all(promises).then(([ohioHouseDistricts, ohioZipcodes]) => {
+            this.setState({
+                ohioHouseDistricts,
+                ohioZipcodes,
+                projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], ohioHouseDistricts),
+            })
+        })
     }
 
     handleGeographyClicked = geography => {
@@ -35,6 +41,17 @@ export default class OhioHouseDistricts extends Component {
                 projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], geography),
                 clickedDistrict: geography.properties.DISTRICT
             })
+        }
+    }
+
+    handleZipcodeClicked = geography => {
+        console.log(geography)
+        if (geography.properties.ZCTA5CE10 !== this.state.clickedZipcode) {
+            firebaseDatabase.ref(`summaryStats/zipcodes/${geography.properties.ZCTA5CE10}`)
+                .once('value')
+                .then(snapshot => snapshot.val())
+                .then(data => this.props.setStatData(data || {RESIDENTIAL_ZIP: geography.properties.ZCTA5CE10, noData: true}, "zipcode"))
+            this.setState({clickedZipcode: geography.properties.ZCTA5CE10})
         }
     }
 
@@ -64,6 +81,27 @@ export default class OhioHouseDistricts extends Component {
                             />
                         )}
                     </Geographies>
+                    {this.state.clickedDistrict &&
+                    <Geographies geography={this.state.ohioZipcodes}>
+                        {({geographies}) => geographies.map(geography =>
+                            <Geography key={geography.rsmKey}
+                                       geography={geography}
+                                       className="hover-geography"
+                                       stroke="black"
+                                       strokeWidth={this.state.clickedZipcode === geography.properties.ZCTA5CE10 ? 2 : 1}
+                                       fill="transparent"
+                                       fillOpacity={0.5}
+                                       onClick={() => this.handleZipcodeClicked(geography)}
+                                       // onMouseEnter={() => this.setState({
+                                       //     tooltipContent: `<p>District ${geography.properties.DISTRICT}</p><p>Incumbent: ${geography.properties.FIRSTNAME} ${geography.properties.LASTNAME} (${geography.properties.PARTY})</p>`,
+                                       // })}
+                                       // onMouseLeave={() => this.setState({
+                                       //     tooltipContent: ""
+                                       // })}
+                            />
+                        )}
+                    </Geographies>
+                    }
                 </ComposableMap>
                 <ReactTooltip html={true}>{this.state.tooltipContent}</ReactTooltip>
             </>

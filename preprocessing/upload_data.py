@@ -20,16 +20,18 @@ default_app = firebase_admin.initialize_app(cred, {
 
 updates = {}
 
-# cities = pd.read_csv('../data/summary_stats/byCity.csv')
-# for i, row in cities.iterrows():
-#     data = json.loads(row.to_json())
-#     city = data['CITY']
-#     city = city.replace('.', '')
-#     updates[f"summaryStats/cities/{city}"] = data
-# db.reference("summaryStats/cities/WASHINGTON COURT HOUSE").update(db.reference("summaryStats/cities/WASHINGTON CH").get())
-# db.reference("summaryStats/cities/EAST LIVERPOOL").update(db.reference("summaryStats/cities/E LIVERPOOL").get())
-# db.reference("summaryStats/cities/WASHINGTON CH").delete()
-# db.reference("summaryStats/cities/E LIVERPOOL").delete()
+cities = pd.read_csv('../data/summary_stats/byCity.csv')
+for i, row in cities.iterrows():
+    data = json.loads(row.to_json())
+    city = data['CITY']
+    if city == 'GRATIS':
+        print(data)
+    city = city.replace('.', '')
+    if not data['Special']:
+        data['Special'] = 0
+    if not data['age_stddev']:
+        data['age_stddev'] = 0
+    updates[f"summaryStats/cities/{city}"] = data
 
 # congressionals = pd.read_csv('../data/summary_stats/byCongressional.csv')
 # for i, row in congressionals.iterrows():
@@ -52,12 +54,12 @@ updates = {}
 #     print(number)
 #     updates[f"summaryStats/stateSenateDistricts/{int(number)}"] = data
 
-zipcodes = pd.read_csv('../data/summary_stats/byZip.csv')
-for i, row in tqdm(zipcodes.iterrows()):
-    data = json.loads(row.to_json())
-    number = data['RESIDENTIAL_ZIP']
-    print(number)
-    updates[f"summaryStats/zipcodes/{int(number)}"] = data
+# zipcodes = pd.read_csv('../data/summary_stats/byZip.csv')
+# for i, row in tqdm(zipcodes.iterrows()):
+#     data = json.loads(row.to_json())
+#     number = data['RESIDENTIAL_ZIP']
+#     print(number)
+#     updates[f"summaryStats/zipcodes/{int(number)}"] = data
 
 # with open('../data/zipcode_stats.json', 'r') as file:
 #     zipcode_stats = json.load(file)

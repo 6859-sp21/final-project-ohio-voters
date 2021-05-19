@@ -3,36 +3,49 @@ import OhioCities from "../components/OhioCities";
 import OhioSenateDistricts from "../components/OhioSenateDistricts";
 import USHouseDistricts from "../components/USHouseDistricts";
 import OhioHouseDistricts from "../components/OhioHouseDistricts";
+import StatisticsTable from "../components/StatisticsTable";
 
 export default class VisualizationPage extends Component {
     state = {
-        selected: 0
+        selectedTab: 0,
+        statData: null,
+        localityType: null
     }
+
+    setStatData = (statData, localityType) => this.setState({statData, localityType});
 
     render() {
         return (
             <>
                 <div style={{padding: 20}}>
-                    <button onClick={() => this.setState({selected: 0})}>
+                    <button onClick={() => this.setState({selectedTab: 0})}>
                         US House District
                     </button>
-                    <button onClick={() => this.setState({selected: 1})}>
+                    <button onClick={() => this.setState({selectedTab: 1})}>
                         Ohio Senate District
                     </button>
-                    <button onClick={() => this.setState({selected: 2})}>
+                    <button onClick={() => this.setState({selectedTab: 2})}>
                         Ohio House District
                     </button>
-                    <button onClick={() => this.setState({selected: 3})}>
+                    <button onClick={() => this.setState({selectedTab: 3})}>
                         Cities
                     </button>
                 </div>
-                <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                <div style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                    alignItems: "center"
+                }}>
                     <div style={{width: "50%"}}>
-                        {this.state.selected === 0 && <USHouseDistricts/>}
-                        {this.state.selected === 1 && <OhioSenateDistricts/>}
-                        {this.state.selected === 2 && <OhioHouseDistricts/>}
-                        {this.state.selected === 3 && <OhioCities/>}
+                        {this.state.selectedTab === 0 && <USHouseDistricts setStatData={this.setStatData}/>}
+                        {this.state.selectedTab === 1 && <OhioSenateDistricts setStatData={this.setStatData}/>}
+                        {this.state.selectedTab === 2 && <OhioHouseDistricts/>}
+                        {this.state.selectedTab === 3 && <OhioCities/>}
                     </div>
+                    {this.state.statData &&
+                    <StatisticsTable localityType={this.state.localityType} statData={this.state.statData}/>
+                    }
                 </div>
             </>
         )

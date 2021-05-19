@@ -34,7 +34,7 @@ export default class StoryTeller extends Component {
                   </Waypoint>
               </div>
 
-              <Visualization vizId={1} />
+              <Visualization vizId={2} />
           </div>
         </>
 

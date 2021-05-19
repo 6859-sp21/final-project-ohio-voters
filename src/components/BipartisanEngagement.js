@@ -84,8 +84,9 @@ export default class BipartisanEngagement extends Component {
         <div style={{marginBottom:-45, paddingTop:0, zIndex:100}}> Bipartisan Relationships with Ohio AAPI Voter Turnout</div>
         {this.state.selectedArea && this.state.selectedScore && <ResponsiveScatterPlot
             animate={(this.state.selectedArea === 'cityStats') ? false : true}
-            data={(getSelected())}
+            data={getSelected()}
             colors = {(d) => d.color}
+            style={{color:"white"}}
             nodeSize = {12}
             margin={{ top: 100, right: 100, bottom: 150, left: 100 }}
             xScale={{ type: 'linear', min: 'auto', max: 'auto' }}
@@ -94,7 +95,31 @@ export default class BipartisanEngagement extends Component {
             yFormat={function(e){return e}}
             blendMode="multiply"
             axisTop={null}
-            axisRight={null}
+            axisFormat={{color:"white"}}
+            tooltip={({ node }) => (
+            <div
+                style={{
+                    color: node.style.color,
+                    background: '#333',
+                    padding: '12px 16px',
+                }}
+            >
+                <strong>
+                    {node.data.type} {node.data._id}
+                </strong>
+                <br />
+                {`Bipartisan Skew: ${node.data.x}`}
+                <br />
+                {`Engagement: ${node.data.y.toFixed(3)}`}
+                </div>
+            )}
+            axisRight={{
+                orient: 'left',
+                tickSize: 5,
+                tickPadding: 5,
+                tickRotation: 0,
+            }}
+
             axisBottom={{
                 orient: 'bottom',
                 tickSize: 5,

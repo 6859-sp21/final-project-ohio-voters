@@ -162,23 +162,58 @@ const getBipartisanEngagement = (stats, type) => {
             const skew = parseFloat(value["CODED_PARTY_AFFILIATION"].toFixed(3));
 
             for (const s of typesOfScores) {
-              if (skew === null || value[s] === null) {
-                console.log('WHATTTT')
-              }
               majority[s][0].data.push({size: Math.round(proportion), _id: district, color: "rgba(78, 165, 253, " + Math.abs(0.2 + 3*skew) + ")", type: type, x: skew, y: value[s], population: value["Number of Rows (Aggregated)"]});
             }
         } else {
             const skew = parseFloat(value["CODED_PARTY_AFFILIATION"].toFixed(3));
 
             for (const s of typesOfScores) {
-              if (skew === null || value[s] === null) {
-                console.log('WHATTTT')
-              }
               majority[s][1].data.push({size: Math.round(Math.abs(proportion)), _id: district, color: "rgba(253, 78, 78, " + (0.2 + Math.abs(3*skew)) + ")", type:type, x: skew, y: value[s], population: value["Number of Rows (Aggregated)"]});
             }
         }
     }
     return majority;
+}
+
+const getAgeInfluences = (stats, type) => {
+    var statistics = [];
+    if (stats.constructor === Object && stats !== null) {
+      stats = Object.keys(stats).map(function(key) {
+        return stats[key];
+      });;
+    }
+    for (const value of stats) {
+        if (value === undefined) {
+          continue;
+        }
+        var district;
+
+        if ("STATE_REPRESENTATIVE_DISTRICT" in value) {
+          district = value["STATE_REPRESENTATIVE_DISTRICT"];
+        } else if ("CITY" in value) {
+          district = value["CITY"];
+        } else if ("CONGRESSIONAL_DISTRICT" in value) {
+          district = value["CONGRESSIONAL_DISTRICT"];
+        } else {
+          district = value["STATE_SENATE_DISTRICT"];
+        }
+
+        const skew = parseFloat(value["CODED_PARTY_AFFILIATION"].toFixed(3));
+        const avg_age = parseFloat(value["avg_age"].toFixed(2));
+        const score = value["Score"];
+        const primary = value["Primary"];
+        const general = value["General"];
+        const special = value["Special"];
+        var color;
+        if (skew >= 0) {
+            color = "rgba(78, 165, 253, " + Math.abs(0.2 + 3*skew) + ")";
+        } else {
+            color = "rgba(253, 78, 78, " + (0.2 + Math.abs(3*skew)) + ")";
+        }
+        statistics.push({age: avg_age, _id: district, color: color, type: type, skew: skew, score: score, primary:primary, general:general, special:special, population: value["Number of Rows (Aggregated)"]});
+    }
+    statistics = statistics.sort((a,b) => (a.age > b.age) ? 1 : -1);
+    return statistics;
 }
 
 
@@ -192,4 +227,5 @@ export {
     getUSHouseDistricts,
     getBipartisanStats,
     getBipartisanEngagement,
+    getAgeInfluences,
 }

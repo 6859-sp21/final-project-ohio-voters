@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {firebaseDatabase, getOhioCities} from "../utils/data";
+import {firebaseDatabase, getOhioCities, getOhioOutline} from "../utils/data";
 import {ComposableMap, Geographies, Geography} from "react-simple-maps";
 import {geoEquirectangular} from "d3-geo";
 import ReactTooltip from "react-tooltip";
@@ -7,16 +7,22 @@ import ReactTooltip from "react-tooltip";
 export default class OhioCities extends Component {
     state = {
         ohioCities: null,
+        ohioOutline: null,
         projection: null,
         clickedCity: null,
         tooltipContent: ""
     }
 
     componentDidMount() {
-        getOhioCities().then(ohioCities => this.setState({
-            ohioCities,
-            projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], ohioCities)
-        }));
+        getOhioCities().then(ohioCities => {
+            getOhioOutline().then(ohioOutline =>
+                this.setState({
+                    ohioCities,
+                    ohioOutline,
+                    projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], ohioCities)
+                })
+            )
+        });
     }
 
     handleGeographyClicked = geography => {
@@ -47,6 +53,15 @@ export default class OhioCities extends Component {
                                width={500}
                                height={500}
                                style={{border: "solid 1px black", borderRadius: 4, margin: 10}}>
+                    <Geographies geography={this.state.ohioOutline}>
+                        {({geographies}) => geographies.map(geography =>
+                            <Geography key={geography.rsmKey}
+                                       geography={geography}
+                                       fill="transparent"
+                                       stroke="black"
+                            />
+                        )}
+                    </Geographies>
                     <Geographies geography={this.state.ohioCities}>
                         {({geographies}) => geographies.map(geography =>
                             <Geography key={geography.rsmKey}

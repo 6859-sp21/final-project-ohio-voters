@@ -32,6 +32,15 @@ const getOhioCities = async () => {
     }).then(response => response.json())
 }
 
+const getOhioOutline = async () => {
+    return await fetch('data/ohio_outline.json', {
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    }).then(response => response.json())
+}
+
 const getOhioHouseDistricts = async () => {
     return await fetch('data/ohio_house_district.json', {
         headers: {
@@ -62,6 +71,7 @@ const getUSHouseDistricts = async () => {
 export {
     getCincinnatiCounties,
     getOhioCities,
+    getOhioOutline,
     getOhioHouseDistricts,
     getOhioSenateDistricts,
     getUSHouseDistricts,

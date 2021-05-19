@@ -4,6 +4,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@nivo/circle-packing": "^0.69.0",
+    "@nivo/core": "^0.69.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -13,11 +15,13 @@
     "react": "^17.0.2",
     "react-csv": "^2.0.3",
     "react-dom": "^17.0.2",
+    "react-dropdown": "^1.9.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-simple-maps": "^2.3.0",
     "react-table": "^7.7.0",
     "react-tooltip": "^4.2.18",
+    "react-waypoint": "^10.1.0",
     "web-vitals": "^1.0.1"
   },
   "scripts": {

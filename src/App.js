@@ -1,21 +1,24 @@
-import {Link, Route, Switch} from "react-router-dom";
+import {Link, Route, Switch, Redirect} from "react-router-dom";
 import './App.css';
-import HomePage from "./pages/HomePage";
-import VisualizationPage from "./pages/VisualizationPage";
-import WriteupPage from "./pages/WriteupPage";
+import StoryPage from "./pages/StoryPage";
+import MapPage from "./pages/MapPage";
+import AboutPage from "./pages/AboutPage";
 
 function App() {
     return (
         <div className="App">
             <nav>
-                <Link to="/">Home</Link>
-                <Link to="/visualization">Visualization</Link>
-                <Link to="/writeup">Writeup</Link>
+                <Link to="/story">Story</Link>
+                <Link to="/map">Map</Link>
+                <Link to="/about">About</Link>
             </nav>
             <Switch>
-                <Route exact path="/" component={HomePage}/>
-                <Route exact path="/visualization" component={VisualizationPage}/>
-                <Route exact path="/writeup" component={WriteupPage}/>
+                <Route exact path="/">
+                    <Redirect to="/story"/>
+                </Route>
+                <Route exact path="/story" component={StoryPage}/>
+                <Route exact path="/map" component={MapPage}/>
+                <Route exact path="/about" component={AboutPage}/>
             </Switch>
         </div>
     );

@@ -5,7 +5,7 @@ import USHouseDistricts from "../components/USHouseDistricts";
 import OhioHouseDistricts from "../components/OhioHouseDistricts";
 import StatisticsTable from "../components/StatisticsTable";
 
-export default class VisualizationPage extends Component {
+export default class MapPage extends Component {
     state = {
         selectedTab: 0,
         statData: null,

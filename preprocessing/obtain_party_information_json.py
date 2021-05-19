@@ -23,7 +23,7 @@ import json
 '''
 national_election_years = {2000,2004,2008,2012,2016,2020}
 final_json = {}
-path = "../public/data/zipcode/*.csv"
+path = "../data/zipcode/*.csv"
 for fname in glob.glob(path):
     with open(fname) as csv_file:
         zipcode = fname.split('/')[-1][:-4]
@@ -59,5 +59,5 @@ for fname in glob.glob(path):
         interior_json = {"num_dem":num_dem, "num_rep": num_rep, "num_ind" : num_ind, "election_turnout":election_turnout, "total_elections" : total_elections, "num_registered": num_registered}
         final_json[zipcode] = interior_json
 
-with open('../public/data/zipcode_stats.json', 'w') as fp:
+with open('../data/zipcode_stats.json', 'w') as fp:
     json.dump(final_json, fp)

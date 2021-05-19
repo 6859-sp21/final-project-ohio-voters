@@ -28,7 +28,7 @@ for i, row in cities.iterrows():
         print(data)
     city = city.replace('.', '')
     if not data['Special']:
-        data['Special'] = 0
+        data['Special'] = None
     if not data['age_stddev']:
         data['age_stddev'] = 0
     updates[f"summaryStats/cities/{city}"] = data

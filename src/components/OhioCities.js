@@ -39,6 +39,7 @@ export default class OhioCities extends Component {
                 projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], ohioOutline),
                 loading: false
             })
+            this.props.setLoadingStatData(false)
         })
     }
 
@@ -61,6 +62,7 @@ export default class OhioCities extends Component {
 
     zoomToCity = geography => {
         this.setState({loading: true})
+        this.props.setLoadingStatData(true)
         firebaseDatabase.ref(`summaryStats/cities/${geography.properties.NAME.toLocaleUpperCase()}`)
             .once('value')
             .then(snapshot => snapshot.val())
@@ -78,6 +80,7 @@ export default class OhioCities extends Component {
 
     handleZipcodeClicked = geography => {
         this.setState({loading: true})
+        this.props.setLoadingStatData(true)
         if (geography.properties.ZCTA5CE10 !== this.state.clickedZipcode) {
             firebaseDatabase.ref(`summaryStats/zipcodes/${geography.properties.ZCTA5CE10}`)
                 .once('value')

@@ -37,6 +37,7 @@ export default class OhioSenateDistricts extends Component {
                 projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], ohioSenateDistricts),
                 loading: false
             })
+            this.props.setLoadingStatData(false)
         })
     }
 
@@ -59,6 +60,7 @@ export default class OhioSenateDistricts extends Component {
 
     zoomToDistrict = (geography) => {
         this.setState({loading: true})
+        this.props.setLoadingStatData(true)
         firebaseDatabase.ref(`summaryStats/stateSenateDistricts/${geography.properties.DISTRICT}`)
             .once('value')
             .then(snapshot => snapshot.val())
@@ -76,6 +78,7 @@ export default class OhioSenateDistricts extends Component {
 
     handleZipcodeClicked = geography => {
         this.setState({loading: true})
+        this.props.setLoadingStatData(true)
         if (geography.properties.ZCTA5CE10 !== this.state.clickedZipcode) {
             firebaseDatabase.ref(`summaryStats/zipcodes/${geography.properties.ZCTA5CE10}`)
                 .once('value')

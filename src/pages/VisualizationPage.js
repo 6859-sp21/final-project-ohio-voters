@@ -14,20 +14,26 @@ export default class VisualizationPage extends Component {
 
     setStatData = (statData, localityType) => this.setState({statData, localityType});
 
+    toggleSelectedTab = selectedTab => {
+        if (selectedTab !== this.state.selectedTab) {
+            this.setState({selectedTab, statData: null, localityType: null})
+        }
+    }
+
     render() {
         return (
             <>
                 <div style={{padding: 20}}>
-                    <button onClick={() => this.setState({selectedTab: 0})}>
+                    <button onClick={() => this.toggleSelectedTab(0)}>
                         US House District
                     </button>
-                    <button onClick={() => this.setState({selectedTab: 1})}>
+                    <button onClick={() => this.toggleSelectedTab(1)}>
                         Ohio Senate District
                     </button>
-                    <button onClick={() => this.setState({selectedTab: 2})}>
+                    <button onClick={() => this.toggleSelectedTab(2)}>
                         Ohio House District
                     </button>
-                    <button onClick={() => this.setState({selectedTab: 3})}>
+                    <button onClick={() => this.toggleSelectedTab(3)}>
                         Cities
                     </button>
                 </div>

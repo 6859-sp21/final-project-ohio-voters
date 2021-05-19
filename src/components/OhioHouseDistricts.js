@@ -36,11 +36,13 @@ export default class OhioHouseDistricts extends Component {
             firebaseDatabase.ref(`summaryStats/stateHouseDistricts/${geography.properties.DISTRICT}`)
                 .once('value')
                 .then(snapshot => snapshot.val())
-                .then(data => this.props.setStatData(data, "stateHouseDistrict"))
-            this.setState({
-                projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], geography),
-                clickedDistrict: geography.properties.DISTRICT
-            })
+                .then(data => {
+                    this.setState({
+                        projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], geography),
+                        clickedDistrict: geography.properties.DISTRICT
+                    })
+                    this.props.setStatData(data, "stateHouseDistrict")
+                })
         }
     }
 
@@ -49,7 +51,10 @@ export default class OhioHouseDistricts extends Component {
             firebaseDatabase.ref(`summaryStats/zipcodes/${geography.properties.ZCTA5CE10}`)
                 .once('value')
                 .then(snapshot => snapshot.val())
-                .then(data => this.props.setStatData(data || {RESIDENTIAL_ZIP: geography.properties.ZCTA5CE10, noData: true}, "zipcode"))
+                .then(data => this.props.setStatData(data || {
+                    RESIDENTIAL_ZIP: geography.properties.ZCTA5CE10,
+                    noData: true
+                }, "zipcode"))
             this.setState({clickedZipcode: geography.properties.ZCTA5CE10})
         }
     }

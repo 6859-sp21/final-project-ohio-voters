@@ -3,6 +3,7 @@ import {firebaseDatabase, getOhioHouseDistricts, getOhioZipcodes} from "../utils
 import {ComposableMap, Geographies, Geography} from "react-simple-maps";
 import {geoEquirectangular} from "d3-geo";
 import ReactTooltip from "react-tooltip";
+import Loading from "./Loading";
 
 export default class OhioHouseDistricts extends Component {
     state = {
@@ -12,7 +13,8 @@ export default class OhioHouseDistricts extends Component {
         clickedDistrict: null,
         clickedDistrictGeography: null,
         clickedZipcode: null,
-        tooltipContent: ""
+        tooltipContent: "",
+        loading: true
     }
 
     componentDidMount() {
@@ -22,6 +24,7 @@ export default class OhioHouseDistricts extends Component {
                 ohioHouseDistricts,
                 ohioZipcodes,
                 projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], ohioHouseDistricts),
+                loading: false
             })
         })
     }
@@ -44,6 +47,7 @@ export default class OhioHouseDistricts extends Component {
     }
 
     zoomToDistrict = geography => {
+        this.setState({loading: true})
         firebaseDatabase.ref(`summaryStats/stateHouseDistricts/${geography.properties.DISTRICT}`)
             .once('value')
             .then(snapshot => snapshot.val())
@@ -52,29 +56,39 @@ export default class OhioHouseDistricts extends Component {
                     projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], geography),
                     clickedDistrict: geography.properties.DISTRICT,
                     clickedDistrictGeography: geography,
-                    clickedZipcode: null
+                    clickedZipcode: null,
+                    loading: false
                 })
                 this.props.setStatData(data, "stateHouseDistrict")
             })
     }
 
     handleZipcodeClicked = geography => {
+        this.setState({loading: true})
         if (geography.properties.ZCTA5CE10 !== this.state.clickedZipcode) {
             firebaseDatabase.ref(`summaryStats/zipcodes/${geography.properties.ZCTA5CE10}`)
                 .once('value')
                 .then(snapshot => snapshot.val())
-                .then(data => this.props.setStatData(data || {
-                    RESIDENTIAL_ZIP: geography.properties.ZCTA5CE10,
-                    noData: true
-                }, "zipcode"))
-            this.setState({
-                clickedZipcode: geography.properties.ZCTA5CE10,
-                projection: geography && geoEquirectangular().fitExtent([[20, 20], [480, 480]], geography)
-            })
+                .then(data => {
+                    this.props.setStatData(data || {
+                        RESIDENTIAL_ZIP: geography.properties.ZCTA5CE10,
+                        noData: true
+                    }, "zipcode")
+                    this.setState({
+                        clickedZipcode: geography.properties.ZCTA5CE10,
+                        projection: geography && geoEquirectangular().fitExtent([[20, 20], [480, 480]], geography),
+                        loading: false
+                    })
+                })
         }
     }
 
     render() {
+        if (this.state.loading) {
+            return (
+                <Loading/>
+            )
+        }
         return (
             this.state.ohioHouseDistricts &&
             <>
@@ -82,7 +96,7 @@ export default class OhioHouseDistricts extends Component {
                                data-tip={this.state.tooltipContent}
                                width={500}
                                height={500}
-                               style={{border: "solid 1px black", borderRadius: 4, margin: 10}}>
+                               style={{margin: 10}}>
                     <Geographies geography={this.state.ohioHouseDistricts}>
                         {({geographies}) => geographies.map(geography =>
                             <Geography key={geography.rsmKey}

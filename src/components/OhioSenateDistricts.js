@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {getOhioSenateDistricts} from "../utils/data";
+import {firebaseDatabase, getOhioSenateDistricts} from "../utils/data";
 import {ComposableMap, Geographies, Geography} from "react-simple-maps";
 import {geoEquirectangular} from "d3-geo";
 import ReactTooltip from "react-tooltip";
@@ -25,7 +25,12 @@ export default class OhioSenateDistricts extends Component {
                 projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], this.state.ohioSenateDistricts),
                 clickedDistrict: null
             })
+            this.props.setStatData(null, null)
         } else {
+            firebaseDatabase.ref(`summaryStats/stateSenateDistricts/${geography.properties.DISTRICT}`)
+                .once('value')
+                .then(snapshot => snapshot.val())
+                .then(data => this.props.setStatData(data, "stateSenateDistrict"))
             this.setState({
                 projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], geography),
                 clickedDistrict: geography.properties.DISTRICT

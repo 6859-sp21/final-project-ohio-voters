@@ -12,9 +12,7 @@ const firebaseConfig = {
 
 const firebaseApp = firebase.initializeApp(firebaseConfig)
 
-const database = firebaseApp.database()
-
-database.ref("zipcodes/43213").once('value').then(snapshot => snapshot.val()).then(d => console.log(d))
+export const firebaseDatabase = firebaseApp.database()
 
 const getCincinnatiCounties = async () => {
     return await fetch('data/cincinnati_counties.json', {

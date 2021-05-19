@@ -2,7 +2,9 @@ import React, {Component} from "react";
 
 export default class StatisticsTable extends Component {
     getHeader = () => {
-        if (this.props.localityType === 'usHouseDistrict') {
+        if (!this.props.localityType) {
+            return "Select a locality to see summary statistics"
+        } else if (this.props.localityType === 'usHouseDistrict') {
             return `US House District: ${this.props.statData.CONGRESSIONAL_DISTRICT}`
         } else if (this.props.localityType === 'stateSenateDistrict') {
             return `Ohio Senate District: ${this.props.statData.STATE_SENATE_DISTRICT}`
@@ -16,6 +18,17 @@ export default class StatisticsTable extends Component {
     }
 
     getData = () => {
+        if (!this.props.statData) {
+            return {
+                Age: '-',
+                "Party Skew": '-',
+                "# Registered Voters": '-',
+                "Overall AVES": '-',
+                "General Election AVES": '-',
+                "Primary Election AVES": '-',
+                "Special Election AVES": '-',
+            }
+        }
         if (this.props.statData.noData) {
             return {
                 Error: "No data found"

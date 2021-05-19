@@ -49,9 +49,7 @@ export default class VisualizationPage extends Component {
                         {this.state.selectedTab === 2 && <OhioHouseDistricts setStatData={this.setStatData}/>}
                         {this.state.selectedTab === 3 && <OhioCities setStatData={this.setStatData}/>}
                     </div>
-                    {this.state.statData &&
                     <StatisticsTable localityType={this.state.localityType} statData={this.state.statData}/>
-                    }
                 </div>
             </>
         )

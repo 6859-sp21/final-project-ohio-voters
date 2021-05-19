@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {firebaseDatabase, getOhioCities, getOhioOutline} from "../utils/data";
+import {firebaseDatabase, getOhioCities, getOhioOutline, getOhioZipcodes} from "../utils/data";
 import {ComposableMap, Geographies, Geography} from "react-simple-maps";
 import {geoEquirectangular} from "d3-geo";
 import ReactTooltip from "react-tooltip";
@@ -8,21 +8,23 @@ export default class OhioCities extends Component {
     state = {
         ohioCities: null,
         ohioOutline: null,
+        ohioZipcodes: null,
         projection: null,
         clickedCity: null,
+        clickedZipcode: null,
         tooltipContent: ""
     }
 
     componentDidMount() {
-        getOhioCities().then(ohioCities => {
-            getOhioOutline().then(ohioOutline =>
-                this.setState({
-                    ohioCities,
-                    ohioOutline,
-                    projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], ohioCities)
-                })
-            )
-        });
+        const promises = [getOhioCities(), getOhioOutline(), getOhioZipcodes()];
+        Promise.all(promises).then(([ohioCities, ohioOutline, ohioZipcodes]) => {
+            this.setState({
+                ohioCities,
+                ohioOutline,
+                ohioZipcodes,
+                projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], ohioCities)
+            })
+        })
     }
 
     handleGeographyClicked = geography => {
@@ -36,11 +38,26 @@ export default class OhioCities extends Component {
             firebaseDatabase.ref(`summaryStats/cities/${geography.properties.NAME.toLocaleUpperCase()}`)
                 .once('value')
                 .then(snapshot => snapshot.val())
-                .then(data => this.props.setStatData(data, 'cities'))
-            this.setState({
-                projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], geography),
-                clickedCity: geography.properties.NAME
-            })
+                .then(data => {
+                    this.setState({
+                        projection: geoEquirectangular().fitExtent([[20, 20], [480, 480]], geography),
+                        clickedCity: geography.properties.NAME
+                    })
+                    this.props.setStatData(data, 'cities')
+                })
+        }
+    }
+
+    handleZipcodeClicked = geography => {
+        if (geography.properties.ZCTA5CE10 !== this.state.clickedZipcode) {
+            firebaseDatabase.ref(`summaryStats/zipcodes/${geography.properties.ZCTA5CE10}`)
+                .once('value')
+                .then(snapshot => snapshot.val())
+                .then(data => this.props.setStatData(data || {
+                    RESIDENTIAL_ZIP: geography.properties.ZCTA5CE10,
+                    noData: true
+                }, "zipcode"))
+            this.setState({clickedZipcode: geography.properties.ZCTA5CE10})
         }
     }
 
@@ -79,6 +96,27 @@ export default class OhioCities extends Component {
                             />
                         )}
                     </Geographies>
+                    {this.state.clickedCity &&
+                    <Geographies geography={this.state.ohioZipcodes}>
+                        {({geographies}) => geographies.map(geography =>
+                            <Geography key={geography.rsmKey}
+                                       geography={geography}
+                                       className="hover-geography"
+                                       stroke="black"
+                                       strokeWidth={this.state.clickedZipcode === geography.properties.ZCTA5CE10 ? 2 : 1}
+                                       fill="transparent"
+                                       fillOpacity={0.6}
+                                       onClick={() => this.handleZipcodeClicked(geography)}
+                                       onMouseEnter={() => this.setState({
+                                           tooltipContent: `<p>Zipcode ${geography.properties.ZCTA5CE10}</p>`,
+                                       })}
+                                       onMouseLeave={() => this.setState({
+                                           tooltipContent: ""
+                                       })}
+                            />
+                        )}
+                    </Geographies>
+                    }
                 </ComposableMap>
                 <ReactTooltip html={true}>{this.state.tooltipContent}</ReactTooltip>
             </>

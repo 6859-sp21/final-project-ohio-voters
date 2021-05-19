@@ -17,7 +17,6 @@ export default class StoryTeller extends Component {
               <div style={{width:'30%', marginBottom:'10vh', marginRight:'0', paddingLeft:'5%'}}>
                   <Waypoint
                       onEnter={() => this.setState({vizId: 0,})}
-                      onLeave={() => this.setState({vizId: 1})}
                       bottomOffset="30%"
                       topOffSet="30%"
                   >
@@ -25,8 +24,15 @@ export default class StoryTeller extends Component {
                   </Waypoint>
 
                   <Waypoint
-                      onEnter={() => this.setState({vizId: 1})}
-                      onLeave={() => this.setState({vizId: 0})}
+                      onEnter={() => this.setState({vizId: 1,})}
+                      bottomOffset="30%"
+                      topOffset="30%"
+                  >
+                      <div><TextSection textId={0} /></div>
+                  </Waypoint>
+
+                  <Waypoint
+                      onEnter={() => this.setState({vizId: 2,})}
                       bottomOffset="30%"
                       topOffset="30%"
                   >
@@ -34,7 +40,7 @@ export default class StoryTeller extends Component {
                   </Waypoint>
               </div>
 
-              <Visualization vizId={1} />
+              <Visualization vizId={this.state.vizId} />
           </div>
         </>
 

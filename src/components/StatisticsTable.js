@@ -1,9 +1,11 @@
 import React, {Component} from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 
 export default class StatisticsTable extends Component {
     getHeader = () => {
         if (!this.props.localityType) {
-            return "Select a locality to see summary statistics"
+            return "Ohio"
         } else if (this.props.localityType === 'usHouseDistrict') {
             return `US House District: ${this.props.statData.CONGRESSIONAL_DISTRICT}`
         } else if (this.props.localityType === 'stateSenateDistrict') {
@@ -20,13 +22,13 @@ export default class StatisticsTable extends Component {
     getData = () => {
         if (!this.props.statData) {
             return {
-                Age: '-',
-                "Party Skew": '-',
-                "# Registered Voters": '-',
-                "Overall AVES": '-',
-                "General Election AVES": '-',
-                "Primary Election AVES": '-',
-                "Special Election AVES": '-',
+                Age: '46.11 ± 17.98',
+                "Party Skew": '0.03040',
+                "# Registered Voters": '180871',
+                "Overall AVES": '0.140',
+                "General Election AVES": '0.259',
+                "Primary Election AVES": '0.052',
+                "Special Election AVES": '0.023',
             }
         }
         if (this.props.statData.noData) {
@@ -48,14 +50,38 @@ export default class StatisticsTable extends Component {
 
     render() {
         return (
-            <div style={{width: "30%", border: "1px solid white", borderRadius: 4}}>
-                <h3>
-                    {this.getHeader()}
-                </h3>
-                {Object.entries(this.getData()).map(([label, value]) => (
-                    <p key={label}>{label}: {value}</p>
-                ))}
+            <div style={{width: "30%"}}>
+                <h2>
+                    Locality AAPI Statistics:
+                </h2>
+                {this.props.loading ?
+                <div style={{
+                    width: "100%",
+                    border: "1px solid white",
+                    borderRadius: 4,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: 310,
+                    color: "#bbb",
+                    fontSize: 20
+                }}>
+                    <p>
+                        <FontAwesomeIcon icon={faSpinner} pulse/> Loading...
+                    </p>
+                </div>
+                :
+                <div style={{width: "100%", height: 310, border: "1px solid white", borderRadius: 4}}>
+                    <h3>
+                        {this.getHeader()}
+                    </h3>
+                    {Object.entries(this.getData()).map(([label, value]) => (
+                        <p key={label}>{label}: {value}</p>
+                    ))}
+                </div>
+                }
             </div>
         )
     }
+
 }

@@ -7,6 +7,7 @@ import * as d3 from "d3";
 import {firebaseDatabase} from '../utils/data';
 import BipartisanBubble from "../components/BipartisanBubble"
 import BipartisanEngagement from "../components/BipartisanEngagement"
+import AgeInfluences from "../components/AgeInfluences"
 
 import "../App.css";
 import { callbackify } from "util";
@@ -37,10 +38,12 @@ const useWindowDimensions = () => {
 export default class Visualization extends Component {
 
     render() {
+      console.log(this.props.vizId)
       return (
         <>
           {this.props.vizId === 0 && <BipartisanBubble />}
           {this.props.vizId === 1 && <BipartisanEngagement />}
+          {this.props.vizId === 2 && <AgeInfluences />}
           <div></div>
         </>
       )

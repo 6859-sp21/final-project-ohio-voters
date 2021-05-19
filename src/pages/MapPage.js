@@ -9,16 +9,19 @@ export default class MapPage extends Component {
     state = {
         selectedTab: 0,
         statData: null,
-        localityType: null
+        localityType: null,
+        loadingStatData: true
     }
 
-    setStatData = (statData, localityType) => this.setState({statData, localityType});
+    setStatData = (statData, localityType) => this.setState({statData, localityType, loadingStatData: false});
 
     toggleSelectedTab = selectedTab => {
         if (selectedTab !== this.state.selectedTab) {
-            this.setState({selectedTab, statData: null, localityType: null})
+            this.setState({selectedTab, statData: null, localityType: null, loadingStatData: true})
         }
     }
+
+    setLoadingStatData = isLoading => this.setState({loadingStatData: isLoading});
 
     render() {
         return (
@@ -47,13 +50,18 @@ export default class MapPage extends Component {
                     justifyContent: "space-around",
                     alignItems: "center"
                 }}>
-                    <div style={{width: "50%"}}>
-                        {this.state.selectedTab === 0 && <USHouseDistricts setStatData={this.setStatData}/>}
-                        {this.state.selectedTab === 1 && <OhioSenateDistricts setStatData={this.setStatData}/>}
-                        {this.state.selectedTab === 2 && <OhioHouseDistricts setStatData={this.setStatData}/>}
-                        {this.state.selectedTab === 3 && <OhioCities setStatData={this.setStatData}/>}
+                    <div style={{width: "50%", height: 500}}>
+                        {this.state.selectedTab === 0 && <USHouseDistricts setStatData={this.setStatData}
+                                                                           setLoadingStatData={this.setLoadingStatData}/>}
+                        {this.state.selectedTab === 1 && <OhioSenateDistricts setStatData={this.setStatData}
+                                                                              setLoadingStatData={this.setLoadingStatData}/>}
+                        {this.state.selectedTab === 2 && <OhioHouseDistricts setStatData={this.setStatData}
+                                                                             setLoadingStatData={this.setLoadingStatData}/>}
+                        {this.state.selectedTab === 3 && <OhioCities setStatData={this.setStatData}
+                                                                     setLoadingStatData={this.setLoadingStatData}/>}
                     </div>
-                    <StatisticsTable localityType={this.state.localityType} statData={this.state.statData}/>
+                    <StatisticsTable localityType={this.state.localityType} statData={this.state.statData}
+                                     loading={this.state.loadingStatData}/>
                 </div>
             </>
         )

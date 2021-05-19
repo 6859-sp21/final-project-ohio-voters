@@ -6,6 +6,8 @@ export default class StatisticsTable extends Component {
             return `US House District: ${this.props.statData.CONGRESSIONAL_DISTRICT}`
         } else if (this.props.localityType === 'stateSenateDistrict') {
             return `Ohio Senate District: ${this.props.statData.STATE_SENATE_DISTRICT}`
+        } else if (this.props.localityType === 'stateHouseDistrict') {
+            return `Ohio House District: ${this.props.statData.STATE_REPRESENTATIVE_DISTRICT}`
         }
     }
 

@@ -40,8 +40,8 @@ export default class VisualizationPage extends Component {
                     <div style={{width: "50%"}}>
                         {this.state.selectedTab === 0 && <USHouseDistricts setStatData={this.setStatData}/>}
                         {this.state.selectedTab === 1 && <OhioSenateDistricts setStatData={this.setStatData}/>}
-                        {this.state.selectedTab === 2 && <OhioHouseDistricts/>}
-                        {this.state.selectedTab === 3 && <OhioCities/>}
+                        {this.state.selectedTab === 2 && <OhioHouseDistricts setStatData={this.setStatData}/>}
+                        {this.state.selectedTab === 3 && <OhioCities setStatData={this.setStatData}/>}
                     </div>
                     {this.state.statData &&
                     <StatisticsTable localityType={this.state.localityType} statData={this.state.statData}/>

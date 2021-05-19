@@ -48,13 +48,10 @@ export default class BipartisanBubble extends Component {
             this.setState({selected : "congressionalStats"});
             this.setState({labelSkip : 10});
           }
-          console.log("Left Change Elements");
         };
 
         const getSelected = () => {
-          console.log("Entered getSelected");
           if (this.state.selected === "cityStats") {
-            console.log("Left getSelected");
             return this.state.cityStats;
           } else if (this.state.selected === "stateHouseStats") {
             return this.state.stateHouseStats;

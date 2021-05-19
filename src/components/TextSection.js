@@ -12,12 +12,17 @@ export default function TextSection(props) {
 
     return (
         <div
-            style={{marginBottom:'10vh'}}
+            id = "container"
+            style={{height: "100vh",verticalAlign:"middle", position:"relative"}}
+        >
+        <div
+            style={{margin:0, position: "absolute", top:"50%", transform: "translateY(-50%)"}}
         >
             {text_bank[text]}
         </div>
+        </div>
 
     );
-    
+
 
 }

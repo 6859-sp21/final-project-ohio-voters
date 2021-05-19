@@ -128,6 +128,59 @@ const getBipartisanStats = (stats, type) => {
     return majority_grouped;
 }
 
+const getBipartisanEngagement = (stats, type) => {
+    const majority = {"Score": [{id: "Democrat Leaning", data:[]}, {id: "Republican Leaning", data:[]}],
+      "Primary": [{id: "Democrat Leaning", data:[]}, {id: "Republican Leaning", data:[]}],
+      "General": [{id: "Democrat Leaning", data:[]}, {id: "Republican Leaning", data:[]}],
+      "Special": [{id: "Democrat Leaning", data:[]}, {id: "Republican Leaning", data:[]}],
+    };
+    if (stats.constructor === Object && stats !== null) {
+      stats = Object.keys(stats).map(function(key) {
+        return stats[key];
+      });;
+    }
+    for (const value of stats) {
+        if (value === undefined) {
+          continue;
+        }
+        var district;
+
+        if ("STATE_REPRESENTATIVE_DISTRICT" in value) {
+          district = value["STATE_REPRESENTATIVE_DISTRICT"];
+        } else if ("CITY" in value) {
+          district = value["CITY"];
+        } else if ("CONGRESSIONAL_DISTRICT" in value) {
+          district = value["CONGRESSIONAL_DISTRICT"];
+        } else {
+          district = value["STATE_SENATE_DISTRICT"];
+        }
+
+        const typesOfScores = ["Score", "Primary", "General", "Special"]
+
+        var proportion = value["CODED_PARTY_AFFILIATION"] * value["Number of Rows (Aggregated)"];
+        if (proportion >= 0) {
+            const skew = parseFloat(value["CODED_PARTY_AFFILIATION"].toFixed(3));
+
+            for (const s of typesOfScores) {
+              if (skew === null || value[s] === null) {
+                console.log('WHATTTT')
+              }
+              majority[s][0].data.push({size: Math.round(proportion), _id: district, color: "rgba(78, 165, 253, " + Math.abs(0.2 + 3*skew) + ")", type: type, x: skew, y: value[s], population: value["Number of Rows (Aggregated)"]});
+            }
+        } else {
+            const skew = parseFloat(value["CODED_PARTY_AFFILIATION"].toFixed(3));
+
+            for (const s of typesOfScores) {
+              if (skew === null || value[s] === null) {
+                console.log('WHATTTT')
+              }
+              majority[s][1].data.push({size: Math.round(Math.abs(proportion)), _id: district, color: "rgba(253, 78, 78, " + (0.2 + Math.abs(3*skew)) + ")", type:type, x: skew, y: value[s], population: value["Number of Rows (Aggregated)"]});
+            }
+        }
+    }
+    return majority;
+}
+
 
 export {
     getCincinnatiCounties,
@@ -138,4 +191,5 @@ export {
     getOhioZipcodes,
     getUSHouseDistricts,
     getBipartisanStats,
+    getBipartisanEngagement,
 }

@@ -50,7 +50,7 @@ export default class MapPage extends Component {
                     justifyContent: "space-around",
                     alignItems: "center"
                 }}>
-                    <div style={{width: "50%", height: 500}}>
+                    <div style={{width: "50%", maxWidth: 500, height: 500}}>
                         {this.state.selectedTab === 0 && <USHouseDistricts setStatData={this.setStatData}
                                                                            setLoadingStatData={this.setLoadingStatData}/>}
                         {this.state.selectedTab === 1 && <OhioSenateDistricts setStatData={this.setStatData}

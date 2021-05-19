@@ -2,6 +2,8 @@
 public/data/zipcode_jsons/*
 *tempData.pkl
 voters_full.json
+package-lock.json
+yarn.lock
 
 venv
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
@@ -29,3 +31,5 @@ venv
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+package-lock.json
+yarn.lock

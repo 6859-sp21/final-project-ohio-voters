@@ -52,23 +52,30 @@ updates = {}
 #     print(number)
 #     updates[f"summaryStats/stateSenateDistricts/{int(number)}"] = data
 
+zipcodes = pd.read_csv('../data/summary_stats/byZip.csv')
+for i, row in tqdm(zipcodes.iterrows()):
+    data = json.loads(row.to_json())
+    number = data['RESIDENTIAL_ZIP']
+    print(number)
+    updates[f"summaryStats/zipcodes/{int(number)}"] = data
+
 # with open('../data/zipcode_stats.json', 'r') as file:
 #     zipcode_stats = json.load(file)
 #
 # for zipcode in tqdm(zipcode_stats):
 #     db.reference(f"zipcodes/{zipcode}/stats").delete()
 
-# db.reference().update(updates)
+db.reference().update(updates)
 
-with open('../public/data/ohio_cities.json', 'r') as file:
-    citiesGeoJson = json.load(file)
-
-for feature in citiesGeoJson['features']:
-    name = feature['properties']['NAME']
-    nameUpper = name.upper()
-    city_place = db.reference(f"summaryStats/cities/{nameUpper}").get(shallow=True)
-    if not city_place:
-        print(f"Couldn't find {name}!")
+# with open('../public/data/ohio_cities.json', 'r') as file:
+#     citiesGeoJson = json.load(file)
+#
+# for feature in citiesGeoJson['features']:
+#     name = feature['properties']['NAME']
+#     nameUpper = name.upper()
+#     city_place = db.reference(f"summaryStats/cities/{nameUpper}").get(shallow=True)
+#     if not city_place:
+#         print(f"Couldn't find {name}!")
 
 
 print("update succeeded")

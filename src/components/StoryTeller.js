@@ -28,7 +28,7 @@ export default class StoryTeller extends Component {
                       bottomOffset="30%"
                       topOffset="30%"
                   >
-                      <div><TextSection textId={0} /></div>
+                      <div><TextSection textId={1} /></div>
                   </Waypoint>
 
                   <Waypoint
@@ -36,7 +36,7 @@ export default class StoryTeller extends Component {
                       bottomOffset="30%"
                       topOffset="30%"
                   >
-                      <div><TextSection textId={0} /></div>
+                      <div><TextSection textId={2} /></div>
                   </Waypoint>
               </div>
 

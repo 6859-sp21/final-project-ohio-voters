@@ -246,9 +246,9 @@ const getAgeInfluences = (stats, type) => {
         const special = value["Special"];
         var color;
         if (skew >= 0) {
-            color = "rgba(78, 165, 253, " + Math.abs(0.2 + 3 * skew) + ")";
+            color = "rgba(78, 165, 253, 1)";
         } else {
-            color = "rgba(253, 78, 78, " + (0.2 + Math.abs(3 * skew)) + ")";
+            color = "rgba(253, 78, 78, 1)";
         }
         statistics.push({
             age: avg_age,

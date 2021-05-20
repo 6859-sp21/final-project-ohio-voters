@@ -10,7 +10,7 @@ import "../App.css";
 import {callbackify} from "util";
 
 const areaOptions = [
-    "Ohio House Districts", "Ohio Senate Districts", "US House Districts", "Cities",
+    "Ohio House Districts", "Ohio Senate Districts", "US House Districts"
 ];
 const defaultAreaOption = areaOptions[0];
 
@@ -38,7 +38,6 @@ export default class AgeInfluences extends Component {
         }))
         firebaseDatabase.ref(`summaryStats/stateSenateDistricts`).once('value').then(snapshot => snapshot.val()).then(stats => this.setState({stateSenateStats: getAgeInfluences(stats, "Ohio Senate District: ")}));
         firebaseDatabase.ref(`summaryStats/congressionalDistricts`).once('value').then(snapshot => snapshot.val()).then(stats => this.setState({congressionalStats: getAgeInfluences(stats, "US House District: ")}));
-        firebaseDatabase.ref(`summaryStats/cities`).once('value').then(snapshot => snapshot.val()).then(stats => this.setState({cityStats: getAgeInfluences(stats, "City: ")}));
     }
 
     render() {

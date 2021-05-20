@@ -170,6 +170,9 @@ export default class OhioCities extends Component {
                         )}
                     </Geographies>
                 </ComposableMap>
+                <div>
+                    Party Skew
+                </div>
                 <LocalityColorLegend position={this.state.hoveringSkew}/>
                 {this.state.clickedCity && !this.state.clickedZipcode &&
                 <button onClick={this.zoomToOhio}>

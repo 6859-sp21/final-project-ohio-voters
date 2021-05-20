@@ -17,13 +17,12 @@ const legendPositionScale = d3.scaleLinear()
 export const getLocalityColor = value => colorScale(value)
 
 export const LocalityColorLegend = props => (
-    <svg width={500} height={100}>
+    <svg width={400} height={100}>
         <LinearGradient id="gradient" from={red} to={blue} vertical={false}/>
-        <rect x={110} y={30} width={380} height={24} fill="url('#gradient')"/>
-        <text x={0} y={46} fill={"white"}>Party Skew</text>
-        <text x={110} y={75} textAnchor={"start"} fill={"white"}>Rep</text>
-        <rect x={299} y={30} width={2} height={24} textAnchor={"middle"} fill={"black"}>0</rect>
-        <text x={490} y={75} textAnchor={"end"} fill={"white"}>Dem</text>
+        <rect x={10} y={30} width={380} height={24} fill="url('#gradient')"/>
+        <text x={10} y={75} textAnchor={"start"} fill={"white"}>Rep</text>
+        <rect x={199} y={30} width={2} height={24} textAnchor={"middle"} fill={"black"}>0</rect>
+        <text x={390} y={75} textAnchor={"end"} fill={"white"}>Dem</text>
         {props.position !== null &&
         <>
             <text x={legendPositionScale(props.position)} y={20} fill={"white"} textAnchor={"middle"}>

@@ -5,7 +5,7 @@ export default class AboutPage extends Component {
         return (
             <div style={{padding: "32px 200px 32px 200px", textAlign: "left"}}>
                 <h1>Ohio AAPI Voter Outreach Visualization Tool</h1>
-                <h3>Darian Bhathena, Noah Faro, Rishi Shah</h3>
+                <h3 style={{color: "#c09cfa"}}>Darian Bhathena, Noah Faro, Rishi Shah</h3>
 
                 <p>
                     <i>In the last decade, significantly more work has done to integrate data-based decision making into
@@ -18,7 +18,7 @@ export default class AboutPage extends Component {
                         (AAPI) voters in the state of Ohio.</i>
                 </p>
                 <br/>
-                <h2>Introduction</h2>
+                <h2 style={{color: "#9f67fa"}}>Introduction</h2>
                 <p>
                     With the growing importance of grassroots outreach in political campaigns, it is more important than
                     ever that organizations organizations have comprehensive and expressive visualization tools to to
@@ -48,7 +48,7 @@ export default class AboutPage extends Component {
                     </ol>
                 </p>
                 <br/>
-                <h2>Related Work</h2>
+                <h2 style={{color: "#9f67fa"}}>Related Work</h2>
                 <p>
                     One aspect of important design decisions we made was the encoding of
                     data on the central state map of the visualization tab. In deliberating this
@@ -75,8 +75,8 @@ export default class AboutPage extends Component {
                     exportable from our visualization tool [7, 8].
                 </p>
                 <br/>
-                <h2>Methods</h2>
-                <h3>Data Sourcing and Wrangling</h3>
+                <h2 style={{color: "#9f67fa"}}>Methods</h2>
+                <h3 style={{color: "#c09cfa"}}>Data Sourcing and Wrangling</h3>
                 <p>
                     Our primary source of data was the Ohio Secretary of State’s Voter
                     Files [1], which is a public repository of all registered voters in the
@@ -109,7 +109,7 @@ export default class AboutPage extends Component {
                     the map, to facilitate efficient loading of the visualization.
                 </p>
                 <br/>
-                <h3>Data Storage</h3>
+                <h3 style={{color: "#c09cfa"}}>Data Storage</h3>
                 <p>
                     With our web-based visualization, we found that directly loading raw
                     data files into the part of the public directory loaded into users’ browsers
@@ -120,7 +120,7 @@ export default class AboutPage extends Component {
                     visualization and prevent the web-page crashes we saw in our A4 [4].
                 </p>
                 <br/>
-                <h3>Voter Engagement Score</h3>
+                <h3 style={{color: "#c09cfa"}}>Voter Engagement Score</h3>
                 <p>
                     Given that the voting records of each of the voters were part of the
                     publicly accessible data set, we were able to calculate a Voter Engagement
@@ -139,8 +139,8 @@ export default class AboutPage extends Component {
                     general, primary, and special elections.
                 </p>
                 <br/>
-                <h2>Results</h2>
-                <h3>Scrollytelling</h3>
+                <h2 style={{color: "#9f67fa"}}>Results</h2>
+                <h3 style={{color: "#c09cfa"}}>Scrollytelling</h3>
                 <p>
                     The first step of our visualization tool as shown to users is a scrollytelling
                     feature. This showcases a specific story line, about the partisan
@@ -157,7 +157,7 @@ export default class AboutPage extends Component {
                     to investigate further.
                 </p>
                 <br/>
-                <h3>Map</h3>
+                <h3 style={{color: "#c09cfa"}}>Map</h3>
                 <p>
                     After viewing a sample story line showcased on the ’Story’ page of
                     the visualization, users can move over to the ’Map’ page to get a
@@ -198,7 +198,7 @@ export default class AboutPage extends Component {
                     this functionality.
                 </p>
                 <br/>
-                <h2>Discussion</h2>
+                <h2 style={{color: "#9f67fa"}}>Discussion</h2>
                 <p>
                     In interviews with our partner organization, it was clear that the creation of this visualization
                     tool enabled specific insights and practices for voter
@@ -216,7 +216,7 @@ export default class AboutPage extends Component {
                     about.
                 </p>
                 <br/>
-                <h2>Future Work</h2>
+                <h2 style={{color: "#9f67fa"}}>Future Work</h2>
                 <p>
                     In future iterations of this project, we expect to expand the visualization
                     to incorporate the person-level data, that is currently only interfaced
@@ -237,7 +237,7 @@ export default class AboutPage extends Component {
                 </p>
 
                 <br/>
-                <h2>Acknowledgements</h2>
+                <h2 style={{color: "#9f67fa"}}>Acknowledgements</h2>
                 <p>
                     The authors wish to thank Arvind Satyanarayan, Katie Bacher, Do˘ga
                     Do˘gan, Saadiyah Husnoo, and Ebenezer Sefah for their fantastic teaching and mentorship,
@@ -247,7 +247,7 @@ export default class AboutPage extends Component {
                     cooperation.
                 </p>
                 <br/>
-                <h2>References</h2>
+                <h2 style={{color: "#9f67fa"}}>References</h2>
                 <p>
                     [1] County Voter Files Download Page.<br/>
                     [2] Data Download ODOT TIMS.<br/>

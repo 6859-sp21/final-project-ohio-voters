@@ -121,6 +121,11 @@ export default class StatisticsTable extends Component {
                     Download Voter CSV
                 </button>
                 }
+                {this.props.localityType !== 'zipcode' &&
+                <div style={{marginTop: 24}}>
+                    Drill down to a specific zipcode of interest to download its voter profiles as a CSV!
+                </div>
+                }
             </div>
         )
     }

@@ -10,9 +10,7 @@ const keys = ["voter_SOS_ID", "CONGRESSIONAL_DISTRICT", "COUNTY_ID", "COUNTY_NUM
     "DATE_OF_BIRTH", "FIRST_NAME", "General", "LAST_NAME", "PRECINCT_CODE", "PRECINCT_NAME",
     "Primary", "REGISTRATION_DATE", "RESIDENTIAL_ADDRESS1", "RESIDENTIAL_CITY",
     "RESIDENTIAL_SECONDARY_ADDR", "RESIDENTIAL_ZIP", "STATE_BOARD_OF_EDUCATION",
-    "STATE_REPRESENTATIVE_DISTRICT", "STATE_SENATE_DISTRICT", "Score", "Special", "VOTER_STATUS",
-    "aapi", "ethnic_description", "ethnicgroups_ethnicgroup1desc", "languages_description", "maritalstatus_description",
-    "residence_addresses_latitude", "residence_addresses_longitude", "us_congressional_district", "voters_gender"]
+    "STATE_REPRESENTATIVE_DISTRICT", "STATE_SENATE_DISTRICT", "Score", "Special", "VOTER_STATUS"]
 
 export default class StatisticsTable extends Component {
     getHeader = () => {

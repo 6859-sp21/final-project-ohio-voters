@@ -185,7 +185,7 @@ const getBipartisanEngagement = (stats, type) => {
                     majority[s][0].data.push({
                         size: Math.round(proportion),
                         _id: district,
-                        color: "rgba(78, 165, 253, " + Math.abs(0.2 + 3 * skew) + ")",
+                        color: "rgba(78, 165, 253, " + Math.abs(0.6 + 3 * skew) + ")",
                         type: type,
                         x: skew,
                         y: value[s],
@@ -201,7 +201,7 @@ const getBipartisanEngagement = (stats, type) => {
                     majority[s][1].data.push({
                         size: Math.round(Math.abs(proportion)),
                         _id: district,
-                        color: "rgba(253, 78, 78, " + (0.2 + Math.abs(3 * skew)) + ")",
+                        color: "rgba(253, 78, 78, " + (0.6 + Math.abs(3 * skew)) + ")",
                         type: type,
                         x: skew,
                         y: value[s],

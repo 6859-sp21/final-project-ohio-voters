@@ -41,9 +41,9 @@ export default class Visualization extends Component {
       console.log(this.props.vizId)
       return (
         <>
-          {this.props.vizId === 0 && <BipartisanBubble />}
-          {this.props.vizId === 1 && <BipartisanEngagement />}
-          {this.props.vizId === 2 && <AgeInfluences />}
+          {this.props.vizId === 1 && <BipartisanBubble />}
+          {this.props.vizId === 2 && <BipartisanEngagement />}
+          {this.props.vizId === 3 && <AgeInfluences />}
           <div></div>
         </>
       )

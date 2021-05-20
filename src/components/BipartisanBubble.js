@@ -10,7 +10,7 @@ import "../App.css";
 import {callbackify} from "util";
 
 const options = [
-    "Ohio House Districts", "Ohio Senate Districts", "US House Districts", "Cities",
+    "US House Districts","Ohio Senate Districts","Ohio House Districts", "Cities",
 ];
 const defaultOption = options[0];
 
@@ -28,10 +28,9 @@ export default class BipartisanBubble extends Component {
     componentDidMount() {
         firebaseDatabase.ref(`summaryStats/stateHouseDistricts`).once('value').then(snapshot => snapshot.val()).then(data => this.setState({
             stateHouseStats: getBipartisanStats(data, "Ohio House District: "),
-            selected: "stateHouseStats"
         }))
         firebaseDatabase.ref(`summaryStats/stateSenateDistricts`).once('value').then(snapshot => snapshot.val()).then(stats => this.setState({stateSenateStats: getBipartisanStats(stats, "Ohio Senate District: ")}));
-        firebaseDatabase.ref(`summaryStats/congressionalDistricts`).once('value').then(snapshot => snapshot.val()).then(stats => this.setState({congressionalStats: getBipartisanStats(stats, "US House District: ")}));
+        firebaseDatabase.ref(`summaryStats/congressionalDistricts`).once('value').then(snapshot => snapshot.val()).then(stats => this.setState({congressionalStats: getBipartisanStats(stats, "US House District: "), selected: "congressionalStats"}));
         firebaseDatabase.ref(`summaryStats/cities`).once('value').then(snapshot => snapshot.val()).then(stats => this.setState({cityStats: getBipartisanStats(stats, "City: ")}));
     }
 

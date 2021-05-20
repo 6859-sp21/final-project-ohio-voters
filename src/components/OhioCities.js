@@ -22,7 +22,7 @@ export default class OhioCities extends Component {
 
     componentDidMount() {
         const promises = [getOhioCities(), getOhioOutline(), getOhioZipcodes()];
-        Promise.all(promises).then(async([ohioCities, ohioOutline, ohioZipcodes]) => {
+        Promise.all(promises).then(async ([ohioCities, ohioOutline, ohioZipcodes]) => {
             await firebaseDatabase.ref('summaryStats/cities').get().then(snapshot => {
                 snapshot.forEach(citySnapshot => {
                     this.setState({[citySnapshot.key]: citySnapshot.val().CODED_PARTY_AFFILIATION})
@@ -80,9 +80,9 @@ export default class OhioCities extends Component {
     }
 
     handleZipcodeClicked = geography => {
-        this.setState({loading: true})
-        this.props.setLoadingStatData(true)
         if (geography.properties.ZCTA5CE10 !== this.state.clickedZipcode) {
+            this.setState({loading: true})
+            this.props.setLoadingStatData(true)
             firebaseDatabase.ref(`summaryStats/zipcodes/${geography.properties.ZCTA5CE10}`)
                 .once('value')
                 .then(snapshot => snapshot.val())

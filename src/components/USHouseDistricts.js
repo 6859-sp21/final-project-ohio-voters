@@ -78,9 +78,9 @@ export default class USHouseDistricts extends Component {
     }
 
     handleZipcodeClicked = geography => {
-        this.setState({loading: true})
-        this.props.setLoadingStatData(true)
         if (geography.properties.ZCTA5CE10 !== this.state.clickedZipcode) {
+            this.setState({loading: true})
+            this.props.setLoadingStatData(true)
             firebaseDatabase.ref(`summaryStats/zipcodes/${geography.properties.ZCTA5CE10}`)
                 .once('value')
                 .then(snapshot => snapshot.val())

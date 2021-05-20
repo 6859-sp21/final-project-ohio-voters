@@ -65,7 +65,6 @@ export default class BipartisanBubble extends Component {
             }
         };
         return (
-            <>
                 <div
                     style={{
                         width: '55%',
@@ -149,7 +148,6 @@ export default class BipartisanBubble extends Component {
                     </>
                     }
                 </div>
-            </>
         );
     }
 

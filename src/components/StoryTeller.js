@@ -6,8 +6,12 @@ import { zip } from "d3";
 
 export default class StoryTeller extends Component {
     state = {
-      vizId : 0,
+      vizId : 1,
     }
+
+    // <div style={{width:'100%', height: "calc(100vh - 150px)", marginBottom:'10vh', marginRight:'0', paddingLeft:'5%'}}>
+    //     Enter your introduction here!
+    // </div>
 
     render () {
       return (
@@ -15,7 +19,7 @@ export default class StoryTeller extends Component {
           <div style={{flexDirection:"row", display:"flex"}}>
               <div style={{width:'30%', marginBottom:'10vh', marginRight:'0', paddingLeft:'5%'}}>
                   <Waypoint
-                      onEnter={() => this.setState({vizId: 0,})}
+                      onEnter={() => this.setState({vizId: 1,})}
                       bottomOffset="49.9%"
                       topOffset="49.9%"
                   >
@@ -23,7 +27,7 @@ export default class StoryTeller extends Component {
                   </Waypoint>
 
                   <Waypoint
-                      onEnter={() => this.setState({vizId: 1,})}
+                      onEnter={() => this.setState({vizId: 2,})}
                       bottomOffset="49.9%"
                       topOffset="49.9%"
                   >
@@ -31,7 +35,7 @@ export default class StoryTeller extends Component {
                   </Waypoint>
 
                   <Waypoint
-                      onEnter={() => this.setState({vizId: 2,})}
+                      onEnter={() => this.setState({vizId: 3,})}
                       bottomOffset="49.9%"
                       topOffset="49.9%"
                   >

@@ -78,9 +78,9 @@ export default class OhioHouseDistricts extends Component {
     }
 
     handleZipcodeClicked = geography => {
-        this.setState({loading: true})
-        this.props.setLoadingStatData(true)
         if (geography.properties.ZCTA5CE10 !== this.state.clickedZipcode) {
+            this.setState({loading: true})
+            this.props.setLoadingStatData(true)
             firebaseDatabase.ref(`summaryStats/zipcodes/${geography.properties.ZCTA5CE10}`)
                 .once('value')
                 .then(snapshot => snapshot.val())
@@ -159,6 +159,9 @@ export default class OhioHouseDistricts extends Component {
                         )}
                     </Geographies>
                 </ComposableMap>
+                <div>
+                    Party Skew
+                </div>
                 <LocalityColorLegend position={this.state.hoveringSkew}/>
                 {this.state.clickedDistrict && !this.state.clickedZipcode &&
                 <button onClick={this.zoomToOhio}>

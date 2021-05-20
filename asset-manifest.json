@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/final-project-ohio-voters/static/css/main.9ff3f375.chunk.css",
-    "main.js": "/final-project-ohio-voters/static/js/main.8c1ec9de.chunk.js",
-    "main.js.map": "/final-project-ohio-voters/static/js/main.8c1ec9de.chunk.js.map",
-    "runtime-main.js": "/final-project-ohio-voters/static/js/runtime-main.560835a0.js",
-    "runtime-main.js.map": "/final-project-ohio-voters/static/js/runtime-main.560835a0.js.map",
+    "main.css": "/final-project-ohio-voters/static/css/main.1a9a97af.chunk.css",
+    "main.js": "/final-project-ohio-voters/static/js/main.447544e3.chunk.js",
+    "main.js.map": "/final-project-ohio-voters/static/js/main.447544e3.chunk.js.map",
+    "runtime-main.js": "/final-project-ohio-voters/static/js/runtime-main.1503c0e3.js",
+    "runtime-main.js.map": "/final-project-ohio-voters/static/js/runtime-main.1503c0e3.js.map",
     "static/css/2.fe708519.chunk.css": "/final-project-ohio-voters/static/css/2.fe708519.chunk.css",
-    "static/js/2.b6586a54.chunk.js": "/final-project-ohio-voters/static/js/2.b6586a54.chunk.js",
-    "static/js/2.b6586a54.chunk.js.map": "/final-project-ohio-voters/static/js/2.b6586a54.chunk.js.map",
-    "static/js/3.74fb86f2.chunk.js": "/final-project-ohio-voters/static/js/3.74fb86f2.chunk.js",
-    "static/js/3.74fb86f2.chunk.js.map": "/final-project-ohio-voters/static/js/3.74fb86f2.chunk.js.map",
+    "static/js/2.294ee064.chunk.js": "/final-project-ohio-voters/static/js/2.294ee064.chunk.js",
+    "static/js/2.294ee064.chunk.js.map": "/final-project-ohio-voters/static/js/2.294ee064.chunk.js.map",
+    "static/js/3.31d214a2.chunk.js": "/final-project-ohio-voters/static/js/3.31d214a2.chunk.js",
+    "static/js/3.31d214a2.chunk.js.map": "/final-project-ohio-voters/static/js/3.31d214a2.chunk.js.map",
     "index.html": "/final-project-ohio-voters/index.html",
     "static/css/2.fe708519.chunk.css.map": "/final-project-ohio-voters/static/css/2.fe708519.chunk.css.map",
-    "static/css/main.9ff3f375.chunk.css.map": "/final-project-ohio-voters/static/css/main.9ff3f375.chunk.css.map",
-    "static/js/2.b6586a54.chunk.js.LICENSE.txt": "/final-project-ohio-voters/static/js/2.b6586a54.chunk.js.LICENSE.txt"
+    "static/css/main.1a9a97af.chunk.css.map": "/final-project-ohio-voters/static/css/main.1a9a97af.chunk.css.map",
+    "static/js/2.294ee064.chunk.js.LICENSE.txt": "/final-project-ohio-voters/static/js/2.294ee064.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.560835a0.js",
+    "static/js/runtime-main.1503c0e3.js",
     "static/css/2.fe708519.chunk.css",
-    "static/js/2.b6586a54.chunk.js",
-    "static/css/main.9ff3f375.chunk.css",
-    "static/js/main.8c1ec9de.chunk.js"
+    "static/js/2.294ee064.chunk.js",
+    "static/css/main.1a9a97af.chunk.css",
+    "static/js/main.447544e3.chunk.js"
   ]
 }

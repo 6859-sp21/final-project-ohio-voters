@@ -158,6 +158,9 @@ export default class USHouseDistricts extends Component {
                         )}
                     </Geographies>
                 </ComposableMap>
+                <div>
+                    Party Skew
+                </div>
                 <LocalityColorLegend position={this.state.hoveringSkew}/>
                 {this.state.clickedDistrict && !this.state.clickedZipcode &&
                 <button onClick={this.zoomToOhio}>

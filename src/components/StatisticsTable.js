@@ -55,31 +55,34 @@ export default class StatisticsTable extends Component {
                     Locality AAPI Statistics:
                 </h2>
                 {this.props.loading ?
-                <div style={{
-                    width: "100%",
-                    border: "1px solid white",
-                    borderRadius: 4,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: 310,
-                    color: "#bbb",
-                    fontSize: 20
-                }}>
-                    <p>
-                        <FontAwesomeIcon icon={faSpinner} pulse/> Loading...
-                    </p>
-                </div>
-                :
-                <div style={{width: "100%", height: 310, border: "1px solid white", borderRadius: 4}}>
-                    <h3>
-                        {this.getHeader()}
-                    </h3>
-                    {Object.entries(this.getData()).map(([label, value]) => (
-                        <p key={label}>{label}: {value}</p>
-                    ))}
-                </div>
+                    <div style={{
+                        width: "100%",
+                        border: "1px solid white",
+                        borderRadius: 4,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        height: 310,
+                        color: "#bbb",
+                        fontSize: 20
+                    }}>
+                        <p>
+                            <FontAwesomeIcon icon={faSpinner} pulse/> Loading...
+                        </p>
+                    </div>
+                    :
+                    <div style={{width: "100%", height: 310, border: "1px solid white", borderRadius: 4}}>
+                        <h3>
+                            {this.getHeader()}
+                        </h3>
+                        {Object.entries(this.getData()).map(([label, value]) => (
+                            <p key={label}>{label}: {value}</p>
+                        ))}
+                    </div>
                 }
+                <div style={{fontSize: 10, width: "100%", textAlign: "center", marginTop: 16}}>
+                    <i>Source: Ohio Secretary of State, Dr. Tom Wong (UCSD Political Science Department).</i>
+                </div>
             </div>
         )
     }

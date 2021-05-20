@@ -1,6 +1,18 @@
 import React, {Component} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
+import {CSVDownload} from "react-csv";
+import {elementOrEmpty} from "react-csv/src/core";
+import {buildURI} from "../utils/calculations";
+import {firebaseDatabase} from "../utils/data";
+
+const keys = ["voter_SOS_ID", "CONGRESSIONAL_DISTRICT", "COUNTY_ID", "COUNTY_NUMBER", "COURT_OF_APPEALS",
+    "DATE_OF_BIRTH", "FIRST_NAME", "General", "LAST_NAME", "PRECINCT_CODE", "PRECINCT_NAME",
+    "Primary", "REGISTRATION_DATE", "RESIDENTIAL_ADDRESS1", "RESIDENTIAL_CITY",
+    "RESIDENTIAL_SECONDARY_ADDR", "RESIDENTIAL_ZIP", "STATE_BOARD_OF_EDUCATION",
+    "STATE_REPRESENTATIVE_DISTRICT", "STATE_SENATE_DISTRICT", "Score", "Special", "VOTER_STATUS",
+    "aapi", "ethnic_description", "ethnicgroups_ethnicgroup1desc", "languages_description", "maritalstatus_description",
+    "residence_addresses_latitude", "residence_addresses_longitude", "us_congressional_district", "voters_gender"]
 
 export default class StatisticsTable extends Component {
     getHeader = () => {
@@ -48,6 +60,29 @@ export default class StatisticsTable extends Component {
         }
     }
 
+    downloadCSV = () => {
+        firebaseDatabase.ref(`zipcodes/${this.props.statData.RESIDENTIAL_ZIP}/voters`)
+            .get()
+            .then(snapshot => {
+                const array = [
+                    keys
+                ]
+                snapshot.forEach(voterSnapshot => {
+                    const newArray = []
+                    const val = voterSnapshot.val()
+                    for (const key of keys) {
+                        if (key === "voter_SOS_ID") {
+                            newArray.push(voterSnapshot.key)
+                        } else {
+                            newArray.push(val[key])
+                        }
+                    }
+                    array.push(newArray)
+                })
+                window.open(buildURI(array))
+            })
+    }
+
     render() {
         return (
             <div style={{width: "30%"}}>
@@ -83,6 +118,11 @@ export default class StatisticsTable extends Component {
                 <div style={{fontSize: 10, width: "100%", textAlign: "center", marginTop: 16}}>
                     <i>Source: Ohio Secretary of State, Dr. Tom Wong (UCSD Political Science Department).</i>
                 </div>
+                {this.props.localityType === 'zipcode' &&
+                <button onClick={this.downloadCSV} style={{marginTop: 16}}>
+                    Download Voter CSV
+                </button>
+                }
             </div>
         )
     }

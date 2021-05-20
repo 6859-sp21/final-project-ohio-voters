@@ -3,7 +3,7 @@ import React, {Component} from "react";
 export default class AboutPage extends Component {
     render() {
         return (
-            <div style={{padding: 32, textAlign: "left"}}>
+            <div style={{padding: "32px 200px 32px 200px", textAlign: "left"}}>
                 <h1>Ohio AAPI Voter Outreach Visualization Tool</h1>
                 <h3>Darian Bhathena, Noah Faro, Rishi Shah</h3>
 

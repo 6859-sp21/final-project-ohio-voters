@@ -141,8 +141,8 @@ export default class BipartisanEngagement extends Component {
                         tooltip={({node}) => (
                             <div
                                 style={{
-                                    color: node.style.color,
-                                    background: '#333',
+                                    color: "white",
+                                    background: 'rgb(204,204,204,1)',
                                     padding: '12px 16px',
                                 }}
                             >

@@ -27,6 +27,7 @@ export default class AgeInfluences extends Component {
         cityStats: null,
         selectedArea: null,
         selectedScore: null,
+        hoveringOver: null,
     }
 
     componentDidMount() {
@@ -123,11 +124,32 @@ export default class AgeInfluences extends Component {
                             padding={0.3}
                             valueScale={{type: 'linear'}}
                             indexScale={{type: 'linear', round: true}}
-                            colors={{scheme: 'nivo'}}
+                            colors={(d) => {return d.index === this.state.hoveringOver ? "#FFD700" : "#A32CC4"}}
                             borderColor={{from: 'color', modifiers: [['darker', 1.6]]}}
                             axisTop={null}
                             axisRight={null}
+                            onMouseEnter={(_data, event) => {
+                              this.setState({hoveringOver: _data.index});
+                            }}
+                            onMouseLeave={(_data, event) => {
+                              this.setState({hoveringOver: null});
+                            }}
                             axisBottom={null}
+                            tooltip={(node) => (
+                              <div
+                                  style={{
+                                      color: "white",
+                                      background: 'rgb(204,204,204,1)',
+                                      padding: '12px 16px',
+                                  }}
+                              >
+                                  <strong>
+                                      {node.data.type} {node.data._id}
+                                  </strong>
+                                  <br/>
+                                  {`Average Age: ${node.data.age}`}
+                              </div>
+                          )}
                             axisLeft={{
                                 tickSize: 5,
                                 tickPadding: 5,
@@ -154,18 +176,41 @@ export default class AgeInfluences extends Component {
                         padding={0.3}
                         valueScale={{type: 'linear'}}
                         indexScale={{type: 'band', round: true}}
-                        colors={(d) => d.data.color}
+                        colors={(d) => {return d.index === this.state.hoveringOver ? "#FFD700" : d.data.color}}
                         borderColor={{from: 'color', modifiers: [['darker', 1.6]]}}
                         axisTop={null}
                         axisRight={null}
                         axisBottom={null}
+                        onMouseEnter={(_data, event) => {
+                          this.setState({hoveringOver: _data.index});
+                        }}
+                        onMouseLeave={(_data, event) => {
+                          this.setState({hoveringOver: null});
+                        }}
+                        tooltip={(node) => (
+                          <div
+                              style={{
+                                  color: "white",
+                                  background: 'rgb(204,204,204,1)',
+                                  padding: '12px 16px',
+                              }}
+                          >
+                              <strong>
+                                  {node.data.type} {node.data._id}
+                              </strong>
+                              <br/>
+                              {`Average Age: ${node.data.age}`}
+                              <br/>
+                              {`Bipartisan Skew: ${node.data.skew}`}
+                          </div>
+                      )}
                         axisLeft={{
                             tickSize: 5,
                             tickPadding: 5,
                             tickRotation: 0,
                             legend: 'Bipartisan Skew',
                             legendPosition: 'middle',
-                            legendOffset: -40
+                            legendOffset: -50
                         }}
                         labelSkipWidth={40}
                         labelSkipHeight={12}
@@ -183,18 +228,41 @@ export default class AgeInfluences extends Component {
                         padding={0.3}
                         valueScale={{type: 'linear'}}
                         indexScale={{type: 'band', round: true}}
-                        colors={"green"}
+                        colors={(d) => {return d.index === this.state.hoveringOver ? "#FFD700" : "#03C04A"}}
                         borderColor={{from: 'color', modifiers: [['darker', 1.6]]}}
                         axisTop={null}
                         axisRight={null}
                         axisBottom={null}
+                        onMouseEnter={(_data, event) => {
+                          this.setState({hoveringOver: _data.index});
+                        }}
+                        onMouseLeave={(_data, event) => {
+                          this.setState({hoveringOver: null});
+                        }}
+                        tooltip={(node) => (
+                          <div
+                              style={{
+                                  color: "white",
+                                  background: 'rgb(204,204,204,1)',
+                                  padding: '12px 16px',
+                              }}
+                          >
+                              <strong>
+                                  {node.data.type} {node.data._id}
+                              </strong>
+                              <br/>
+                              {`Average Age: ${node.data.age}`}
+                              <br/>
+                              {`Engagement Score: ${node.data[this.state.selectedScore]}`}
+                          </div>
+                      )}
                         axisLeft={{
                             tickSize: 5,
                             tickPadding: 5,
                             tickRotation: 0,
-                            legend: 'Election Turnout Score',
+                            legend: 'Election Engagement Score',
                             legendPosition: 'middle',
-                            legendOffset: -40
+                            legendOffset: -50
                         }}
                         labelSkipWidth={40}
                         labelSkipHeight={40}

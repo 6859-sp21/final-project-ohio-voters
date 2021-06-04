@@ -4,6 +4,7 @@ public/data/zipcode_jsons/*
 voters_full.json
 package-lock.json
 yarn.lock
+*adminsdk*
 
 venv
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
